@@ -710,7 +710,7 @@ end
 
 local function evalNextPage()
 	--Prevents overflows.
-	if currPage == highestPage then
+	if currPage == filteredHighestPage then
 		drawPageWarning("high")
 		return
 	end
