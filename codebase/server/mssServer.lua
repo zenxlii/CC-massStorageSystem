@@ -54,15 +54,17 @@ local function saveDisplayManifest()
 		displayManifest[eName] = {}
 		displayManifest[eName]["amount"] = data["free"]
 		displayManifest[eName]["displayName"] = data["displayName"]
-		if data["maxStack"] == 64 then
-			
-		else
+		--Only adds the maxStack if it
+		--isn't 64, as we assume it is
+		--64 if omitted.
+		if data["maxStack"] ~= 64 then
 			displayManifest[eName]["maxStack"] = data["maxStack"]
 		end
+		--Only adds hasRecipe if it has
+		--a recipe, as we assume it
+		--doesn't if omitted.
 		if recipeList[eName] then
 			displayManifest[eName]["hasRecipe"] = true
-		else
-			displayManifest[eName]["hasRecipe"] = false
 		end
 	end
 	local serialDM = textutils.serialise(displayManifest)
@@ -112,11 +114,14 @@ local function loadDataFromDM()
 	end
 	file.close()
 	local outData = textutils.unserialise(dmSerial)
-	--Add the missing maxStack values
-	--back in.
+	--Add the missing maxStack and
+	--hasRecipe values back in.
 	for eName, data in pairs(outData) do
 		if data["maxStack"] == nil then
 			data["maxStack"] = 64
+		end
+		if data["hasRecipe"] == nil then
+			data["hasRecipe"] = false
 		end
 	end
 	return outData

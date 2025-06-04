@@ -73,11 +73,14 @@ local function readDisplayManifest()
 	end
 	file.close()
 	displayManifest = textutils.unserialise(dmSerial)
-	--Add the missing maxStack values
-	--back in.
+	--Add the missing maxStack and
+	--hasRecipe values back in.
 	for eName, data in pairs(displayManifest) do
 		if data["maxStack"] == nil then
 			data["maxStack"] = 64
+		end
+		if data["hasRecipe"] == nil then
+			data["hasRecipe"] = false
 		end
 	end
 end
