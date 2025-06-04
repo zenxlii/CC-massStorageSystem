@@ -114,13 +114,13 @@ local searchBarText = ""
 --contains entries for items with
 --display names that match the current
 --searchString.
-local sortedSearchedNames = {}
+local filteredSortedNames = {}
 
 --
-local sortedEntryCount = 0
+local filteredEntryCount = 0
 
 --
-local sortedHighestPage = 0
+local filteredHighestPage = 0
 
 --The number of items to be shown per
 --page of the item list.
@@ -163,7 +163,7 @@ local function sortDisplayNames()
 	sortedNames = {}
 	for eName, entry in pairs(displayManifest) do
 		--local displayAmount = displayConverter(amount)
-		table.insert(sortedNames, {entry["displayName"], eName})
+		table.insert(sortedNames, {entry["displayName"], eName, ""})
 	end
 	--Sort sortedNames alphabetically.
 	table.sort(sortedNames, function(k1, k2) return k1[1] < k2[1] end)
@@ -171,8 +171,35 @@ local function sortDisplayNames()
 	--manifest's size.
 	entryCount = #sortedNames
 	highestPage = math.ceil(entryCount / pageSize)
+	--[[
 	currPage = math.min(1, highestPage)
 	currSelIndex = false
+	]]
+end
+
+local function applySearchFilter()
+	filteredSortedNames = {}
+	for index, entry in ipairs(sortedNames) do
+		local caselessDName = string.lower(entry[1])
+		local caselessDNameShort = string.lower(entry[3])
+		--Accounts for finding the
+		--search string in either the
+		--full display name or the
+		--shortened display name.
+		if string.find(caselessDName, searchString) or string.find(caselessDNameShort, searchString) then
+			table.insert(filteredSortedNames, {entry[1], entry[2], entry[3]})
+		end
+	end
+	filteredEntryCount = #filteredSortedNames
+	filteredHighestPage = math.ceil(filteredEntryCount / pageSize)
+	currPage = math.min(1, filteredHighestPage)
+	currSelIndex = false
+end
+
+local function resetSearch()
+	searchBarText = ""
+	searchString = ""
+	applySearchFilter()
 end
 
 --Calls readDisplayManifest() followed
@@ -181,6 +208,7 @@ local function readAndSort()
 	readDisplayManifest()
 	removeEmptyManifestEntries()
 	sortDisplayNames()
+	resetSearch()
 end
 
 --
@@ -263,7 +291,7 @@ local function drawItemListBackground()
 	box(1,12,25,13,colours.lightGrey)
 	--Draw the page count text.
 	pos(9,12)
-	write("Page "..currPage.."/"..highestPage)
+	write("Page "..currPage.."/"..filteredHighestPage)
 	--Draw the item list background.
 	box(1,2,25,11,colours.blue)
 end
@@ -289,12 +317,19 @@ local function drawItemList()
 		write("You have no items :(")
 		return
 	end
+	--Another special case for if no
+	--items fit the current search.
+	if filteredEntryCount == 0 and searchString ~= "" then
+		pos(1,6)
+		write("No items fit your search")
+		return
+	end
 	--Figure out the page offset and
 	--how many items to show.
 	local pageOffset = pageSize * (currPage - 1)
 	local entriesToShow = pageSize
-	if currPage == highestPage then
-		entriesToShow = entryCount % pageSize
+	if currPage == filteredHighestPage then
+		entriesToShow = filteredEntryCount % pageSize
 		if entriesToShow == 0 then
 			entriesToShow = pageSize
 		end
@@ -303,7 +338,7 @@ local function drawItemList()
 	--this page.
 	for cnt = 1, entriesToShow do
 		local globalIndex = cnt + pageOffset
-		local names = sortedNames[globalIndex]
+		local names = filteredSortedNames[globalIndex]
 		local dName = names[1]
 		--Stops the item name from
 		--running over into other areas
@@ -338,7 +373,7 @@ local function drawPageWarning(highLow)
 	write("!!WARNING!!")
 	pos(1,13)
 	write("Can't move to that page!")
-	sleep(3)
+	sleep(1)
 	while true do
 		local eventData = {os.pullEvent()}
 		if eventData[1] == "mouse_click" or eventData[1] == "key" then
@@ -355,7 +390,7 @@ local function drawFocusCardItem()
 	local boxColour = colours.red
 	local currSelAmount = "No Selection"
 	if currSelIndex then
-		currSelAmount = displayManifest[sortedNames[currSelIndex][2]]["amount"]
+		currSelAmount = displayManifest[filteredSortedNames[currSelIndex][2]]["amount"]
 		if drawAmount <= currSelAmount then
 			boxColour = colours.green
 		end
@@ -370,7 +405,7 @@ local function drawFocusCardItem()
 	--Informs the user that this item
 	--is craftable by the system.
 	if currSelIndex then
-		if displayManifest[sortedNames[currSelIndex][2]]["hasRecipe"] then
+		if displayManifest[filteredSortedNames[currSelIndex][2]]["hasRecipe"] then
 			pos(26,8)
 			write("Craftable!")
 		end
@@ -430,7 +465,7 @@ local function drawAmountWarning(highLow)
 		write("0000")
 		drawAmount = 0
 	end
-	sleep(3)
+	sleep(1)
 	while true do
 		local eventData = {os.pullEvent()}
 		if eventData[1] == "mouse_click" or eventData[1] == "key" then
@@ -444,12 +479,31 @@ local function drawFocusCard()
 	drawFocusCardAmount()
 end
 
+--Writes the contents of searchBarText
+--into the search bar.
+local function writeSearchBarText()
+	pos(8,1)
+	tCol(colours.white)
+	bCol(colours.grey)
+	--Check to see how long the current
+	--searchBarText is, so that we can
+	--truncate it if it gets too long.
+	if #searchBarText > 32 then
+		write(string.sub(searchBarText, #searchBarText-31))
+	else
+		write(searchBarText)
+	end
+end
+
 local function drawSearchBar()
 	tCol(colours.white)
 	box(1,1,7,1,colours.lightGrey)
 	pos(1,1)
 	write("Search:")
 	box(8,1,x,1,colours.grey)
+	--With the bar itself drawn, now we
+	--can write the user-provided text.
+	writeSearchBarText()
 end
 
 local function drawAllButtons()
@@ -471,7 +525,7 @@ local function requestNoSelectWarning()
 	write("No item is")
 	pos(26,9)
 	write("selected!")
-	sleep(3)
+	sleep(1)
 	while true do
 		local eventData = {os.pullEvent()}
 		if eventData[1] == "mouse_click" or eventData[1] == "key" then
@@ -635,6 +689,14 @@ local function makeRequestFailBox()
 	end
 end
 
+--Function that handles when a new
+--search needs to be done.
+local function evalNewSearch()
+	searchString = searchBarText
+	applySearchFilter()
+	drawGUI()
+end
+
 --Button Stuff Part 2
 
 local function evalPreviousPage()
@@ -729,7 +791,7 @@ local function evalSendRequest()
 	end
 	--Makes a file that contains the
 	--data of the request.
-	local eName = sortedNames[currSelIndex][2]
+	local eName = filteredSortedNames[currSelIndex][2]
 	local requestTable = {}
 	requestTable["item"] = eName
 	requestTable["amount"] = drawAmount
@@ -739,13 +801,10 @@ local function evalSendRequest()
 	file.close()
 	
 	makeRequestWaitingBox()
-	--TODO:
-	--Wait for a rednet message from
-	--the server to confirm that the
-	--request went through, and that
-	--manifestFile has been updated to
-	--account for the request having
-	--been sent.
+	--Waits for the server to respond,
+	--saying that it has received the
+	--request, and if it can be done or
+	--not.
 	local id, message = rednet.receive("mssClient", 5)
 	if message == true then
 		
@@ -764,9 +823,12 @@ local function evalSendRequest()
 	--Now refresh the whole UI and
 	--stuff because we've just changed
 	--the manifest on the server.
-	evalRefresh()
+	readAndSort()
 end
 
+--If a button in the GUI is pressed,
+--identify which one it was and then
+--execute its associated function.
 local function evaluateButtonPress(button)
 	if button == "previousPage" then
 		evalPreviousPage()
@@ -830,8 +892,17 @@ local function mainLoop()
 			local pressedButton = findButtonPressed(eventData[3], eventData[4])
 			evaluateButtonPress(pressedButton)
 		end
-    elseif event == "key" then
-		
+	elseif event == "key" and keys.getName(eventData[2]) == "enter" then
+		evalNewSearch()
+	elseif event == "key" and keys.getName(eventData[2]) == "backspace" then
+		if searchBarText ~= "" then
+			searchBarText = string.sub(searchBarText, 1, #searchBarText-1)
+		end
+		drawSearchBar()
+    elseif event == "char" then
+		local charPressed = eventData[2]
+		searchBarText = searchBarText..charPressed
+		writeSearchBarText()
     end
 end
 
@@ -856,14 +927,7 @@ local function main()
 	--Initialise everything.
 	readAndSort()
 	drawGUI()
-	pos(8,1)
 	--Run the main loop.
-	--[[
-	while escapeTrigger == false do
-		mainLoop()
-		tryPullRequests()
-	end
-	]]
 	mainLoopParalleliser()
 end
 
