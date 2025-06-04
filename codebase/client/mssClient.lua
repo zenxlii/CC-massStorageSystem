@@ -745,12 +745,13 @@ local function evalSendRequest()
 	--been sent.
 	local id, message = rednet.receive("mssClient", 5)
 	if message == true then
-		makeRequestSuccessBox()
+		
 		if thingsToTake[eName] then
 			thingsToTake[eName] = thingsToTake[eName] + drawAmount
 		else
 			thingsToTake[eName] = drawAmount
 		end
+		makeRequestSuccessBox()
 	elseif message == false then
 		makeRequestFailBox()
 	else
@@ -831,16 +832,36 @@ local function mainLoop()
     end
 end
 
+--Shortcut function that runs all of
+--the "main" functions in parallel.
+local function mainLoopParalleliser()
+	local mainFuncs = {}
+	table.insert(mainFuncs, function()
+		while escapeTrigger == false do
+			mainLoop()
+		end
+	end)
+	table.insert(mainFuncs, function()
+		while escapeTrigger == false do
+			tryPullRequests()
+		end
+	end)
+	parallel.waitForAll(table.unpack(mainFuncs))
+end
+
 local function main()
 	--Initialise everything.
 	readAndSort()
 	drawGUI()
 	pos(8,1)
 	--Run the main loop.
+	--[[
 	while escapeTrigger == false do
 		mainLoop()
 		tryPullRequests()
 	end
+	]]
+	mainLoopParalleliser()
 end
 
 main()
