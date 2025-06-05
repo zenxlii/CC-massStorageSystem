@@ -1313,9 +1313,14 @@ end
 local clientDumpImportTask = {}
 clientDumpImportTask["taskType"] = "import"
 clientDumpImportTask["target"] = importBuffer
---clientDumpImportTask["target"] = "expandedstorage:chest_4"
 clientDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, clientDumpImportTask)
+
+local procSysDumpImportTask = {}
+procSysDumpImportTask["taskType"] = "import"
+procSysDumpImportTask["target"] = "expandedstorage:chest_5"
+procSysDumpImportTask["specificSlots"] = false
+table.insert(masterTaskList, procSysDumpImportTask)
 
 --Main Server Loop
 
