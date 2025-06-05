@@ -1354,9 +1354,15 @@ print("Ready to go!")
 while true do
 	readAllRequests()
 	interpretTaskListEarly()
-	--IDK why, but running the scan
-	--errands in parallel just doesn't
-	--work?????????????????????????????
+	--So batchedParallel assumes that
+	--the input table of functions is
+	--indexed like a continuous array,
+	--but scanErrands isn't indexed
+	--like that.
+	--TODO:
+	--Make a custom one-off version of
+	--batchedParallel that works with
+	--string keys.
 	--mssU.batchedParallel(scanErrands)
 	for _, errand in pairs(scanErrands) do
 		errand()
