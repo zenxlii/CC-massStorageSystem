@@ -1317,7 +1317,12 @@ local function readRequest(fileName)
 			table.insert(masterTaskList, requestTask)
 			rednet.send(sender, true, "mssClient")
 		else
-			rednet.send(sender, false, "mssClient")
+			local checkCraft = checkCraftViability(requestData["item"], requestData["amount"])
+			if checkCraft == true then
+				rednet.send(sender, true, "mssClient")
+			else
+				rednet.send(sender, false, "mssClient")
+			end
 		end
 	else
 		rednet.send(sender, false, "mssClient")
@@ -1341,13 +1346,13 @@ clientDumpImportTask["target"] = importBuffer
 clientDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, clientDumpImportTask)
 
---[[
+
 local procSysDumpImportTask = {}
 procSysDumpImportTask["taskType"] = "import"
 procSysDumpImportTask["target"] = "expandedstorage:chest_5"
 procSysDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, procSysDumpImportTask)
-]]
+
 
 --Main Server Loop
 
