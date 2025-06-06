@@ -141,10 +141,20 @@ local function loadDetailsFromDM()
 	for eName, data in pairs(dmData) do
 		if not manifest[eName] then
 			manifest[eName] = {}
+		end
+		if not manifest[eName]["data"] then
 			manifest[eName]["data"] = {}
+		end
+		if not manifest[eName]["total"] then
 			manifest[eName]["total"] = 0
+		end
+		if not manifest[eName]["free"] then
 			manifest[eName]["free"] = 0
+		end
+		if not manifest[eName]["reserved"] then
 			manifest[eName]["reserved"] = 0
+		end
+		if not manifest[eName]["pending"] then
 			manifest[eName]["pending"] = 0
 		end
 		manifest[eName]["displayName"] = data["displayName"]
@@ -168,10 +178,20 @@ local function addDetailsToManifest(invName, slotNum)
 	--and if not, make one.
 	if not manifest[eName] then
 		manifest[eName] = {}
+	end
+	if not manifest[eName]["data"] then
 		manifest[eName]["data"] = {}
+	end
+	if not manifest[eName]["total"] then
 		manifest[eName]["total"] = 0
+	end
+	if not manifest[eName]["free"] then
 		manifest[eName]["free"] = 0
+	end
+	if not manifest[eName]["reserved"] then
 		manifest[eName]["reserved"] = 0
+	end
+	if not manifest[eName]["pending"] then
 		manifest[eName]["pending"] = 0
 	end
 	manifest[eName]["displayName"] = itemDetails.displayName
@@ -358,14 +378,23 @@ end
 --addDetailsToManifest().
 local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 	if scanInv and scanSlot then
-		if manifest[eName] == nil then
+		if manifest[eName] == nil or manifest[eName]["data"] == nil then
 			addDetailsToManifest(scanInv, scanSlot)
 		end
 	else
-		if manifest[eName] == nil then
+		if manifest[eName] == nil or manifest[eName]["data"] == nil then
 			addDetailsToManifest(allInvs[allInvsID], slot)
 		end
 	end
+	--print(eName)
+	--print(allInvsID)
+	--print(slot)
+	--print(addition)
+	--print(scanInv)
+	--print(scanSlot)
+	--error("Breakpoint!", 2)
+	--print(manifest[eName])
+	--print(manifest[eName]["data"])
 	if manifest[eName]["data"][allInvsID] == nil then
 		--print(manifest[eName]["data"][allInvsID])
 		--error("Breakpoint!", 2)
@@ -596,8 +625,8 @@ end
 local pullErrands = {sleep(0.05)}
 
 local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
+	addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
 	mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
-	addItems(eName, targetID, targetSlot, amount)
 end
 
 local function addPullErrand(source, sourceSlot, amount, eName)
