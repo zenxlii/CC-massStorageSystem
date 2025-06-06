@@ -366,6 +366,8 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 		end
 	end
 	if manifest[eName]["data"][allInvsID] == nil then
+		--print(manifest[eName]["data"][allInvsID])
+		--error("Breakpoint!", 2)
 		manifest[eName]["data"][allInvsID] = {}
 		manifest[eName]["data"][allInvsID][slot] = addition
 	elseif manifest[eName]["data"][allInvsID][slot] == nil then
@@ -592,8 +594,9 @@ end
 --in this iteration of the main loop.
 local pullErrands = {sleep(0.05)}
 
-local function pull(target, targetSlot, source, sourceSlot, amount)
+local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
 	mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
+	addItems(eName, targetID, targetSlot, amount)
 end
 
 local function addPullErrand(source, sourceSlot, amount, eName)
@@ -619,9 +622,9 @@ local function addPullErrand(source, sourceSlot, amount, eName)
 		end
 	end
 	table.insert(pullErrands, function()
-		pull(genInvs[targetID], targetSlot, source, sourceSlot, amount)
+		pull(genInvs[targetID], targetSlot, source, sourceSlot, amount, eName, targetID)
 	end)
-	addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
+	--addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
 end
 
 --Quickly dumps everything in the
@@ -694,6 +697,11 @@ craft = {"taskType" = "craft", "eName" = "minecraft:iron_ingot", "amount" = 18}
 supply = {}--TODO
 output = {"taskType" = "output", "amount" = 12, "eName" = "minecraft:iron_block", "target" = "turtle_3"}
 ]]
+
+--All of the pushSpreader functions
+--rely upon the manifest being accurate
+--at the moment they are evaluated...
+--and aren't PERFECTLY safe.
 
 --Used for both export and output tasks
 --that are not dumb.
@@ -903,6 +911,34 @@ local function supplyTask(taskTable)
 	local amount = taskTable.amount
 end
 
+--From an ingredient list and a batch
+--limit, determines the maximum amount
+--of times we can craft a recipe with
+--what's currently in storage.
+local function maxCanCraft(ingTable, batchLim)
+	--Expand out to find out how much
+	--of each ingredient we need to do
+	--one craft of the item.
+	local ingAmounts = {}
+	for _, ingData in pairs(ingTable) do
+		if ingAmounts[ingData[1]] then
+			ingAmounts[ingData[1]] = ingAmounts[ingData[1]] + ingData[2]
+		else
+			ingAmounts[ingData[1]] = ingData[2]
+		end
+	end
+	--Divide the free amount off each
+	--ingredient in the manifest by how
+	--much this recipe needs, and
+	--retain the lowest value we've
+	--seen.
+	local craftsPossible = math.huge
+	for eName, amountPerCraft in pairs(ingAmounts) do
+		craftsPossible = math.min(math.floor(manifest[eName]["reserved"] / ingAmounts[eName]), craftsPossible)
+	end
+	return craftsPossible
+end
+
 --Completes a "craft" task.
 local function craftTask(taskTable)
 	local eName = taskTable.eName
@@ -913,6 +949,17 @@ local function craftTask(taskTable)
 	if not recipe then
 		print("No recipe exists for "..eName.."!")
 		return 0
+	end
+	--Determine if we can make a craft
+	--of this item happen with what is
+	--currently in the system.
+	local maxCraft = maxCanCraft(recipe[3], recipe[2])
+	--print(maxCraft)
+	local craftsToDo = math.ceil(amountLeft/recipe[1])
+	--print(craftsToDo)
+	maxCraft = math.min(maxCraft, craftsToDo)
+	if maxCraft == 0 then
+		return amountLeft
 	end
 	if recipe[4] == "craftingTable" then
 		--Only attempt to craft this
@@ -1135,7 +1182,7 @@ end
 
 --
 local function checkCraftViabilityStep(eName, amount, craftManifest)
-	print(eName)
+	--print(eName)
 	craftManifest[eName]["wantedTotal"] = craftManifest[eName]["wantedTotal"] + amount
 	distributeWantedTotal(eName, craftManifest)
 	if craftManifest[eName]["amountToMake"] > 0 then
@@ -1170,7 +1217,7 @@ end
 --craft tasks/jobs for this request if
 --it is doable.
 local function checkCraftViability(eName, amount)
-	print(eName)
+	--print(eName)
 	--This can be used to effectively
 	--make a deep copy of the "free"
 	--part of the manifest.
@@ -1198,7 +1245,14 @@ local function checkCraftViability(eName, amount)
 	end
 	--By reaching here, we know that
 	--the entire request is doable.
-	
+	--[[
+	print("The craft is possible!")
+	for eName, item in pairs(craftManifest) do
+		if item["wantedTotal"] > 0 then
+			print(eName.." takes "..item["amountToTake"].." and makes "..item["amountToMake"])
+		end
+	end
+	]]
 	--Because this is the "master" of
 	--the checking chain, if it turns
 	--out that the craft is doable,
@@ -1287,11 +1341,13 @@ clientDumpImportTask["target"] = importBuffer
 clientDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, clientDumpImportTask)
 
+--[[
 local procSysDumpImportTask = {}
 procSysDumpImportTask["taskType"] = "import"
 procSysDumpImportTask["target"] = "expandedstorage:chest_5"
 procSysDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, procSysDumpImportTask)
+]]
 
 --Main Server Loop
 
@@ -1316,12 +1372,6 @@ testTask3["eName"] = "minecraft:redstone_torch"
 testTask3["amount"] = 1
 testTask3["target"] = clientExportBuffer
 --table.insert(masterTaskList, testTask3)
-
---TODO:
---Figure out what the fuck is going
---wrong when having a craft task and an
---output task in the masterTaskList at
---the same time.
 
 --checkCraftViability("minecraft:redstone_torch", 1)
 
