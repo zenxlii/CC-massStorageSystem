@@ -210,7 +210,6 @@ local function initialiseManifest()
 	--scratch because no other task can
 	--be mid-execution before we start
 	--the main execution loop.
-	--local wipManifest = {}
 	for index, list in ipairs(genInvsList) do
 		for slotNum, iData in pairs(list) do
 			local slot = slotNum
@@ -222,18 +221,14 @@ local function initialiseManifest()
 				table.insert(funcs, function()
 					addDetailsToManifest(genInvs[index], slot)
 				end)
-				--print("New def made")
 			else
-				--print("No new def made")
 			end
 			if manifest[eName]["data"] == nil then
 				manifest[eName]["data"] = {}
 			end
 			if manifest[eName]["data"][index] == nil then
 				manifest[eName]["data"][index] = {}
-				--print("New inv made")
 			else
-				--print("No new inv made")
 			end
 			manifest[eName]["data"][index][slot] = {}
 			manifest[eName]["data"][index][slot] = count
@@ -269,16 +264,6 @@ local function initialiseManifest()
 	--manifest for the clients to use.
 	saveDisplayManifest()
 end
-
-
-
---[[
-initialiseManifest()
-for eName, rootData in pairs(manifest) do
-	print(rootData["metadata"]["displayName"])
-	print(rootData["metadata"]["total"])
-end
-]]
 
 --Requestable Functions
 
@@ -328,20 +313,6 @@ local function locateItem(eName, amount)
 	end
 	return sources
 end
-
---Old testing code
---[[
-
-initialiseManifest()
-print("Manifest Data:")
-print(manifest["minecraft:redstone"]["metadata"]["total"])
-local test = locateItem("minecraft:redstone", 160)
-print("Test Print:")
-for index, data in pairs(test) do
-	print(data[1])
-	print("slot: "..data[2].." with amount: "..data[3])
-end
-]]
 
 --Manifest Altering Functions
 --NOTE:
@@ -505,19 +476,20 @@ local function postScanWork()
 	end
 end
 
+--Parallel-friendly addScanErrand().
 local function addScanErrand(target)
 	--Prevents duplicate scans for the
 	--same inventory being made.
-	if not scanErrands[target] then
+	if not scanReturns[target] then
 		--If we've never seen this
 		--inventory before, figure out
 		--its slot count.
 		if not scanSlotCounts[target] then
 			scanSlotCounts[target] = mssU.fastWrap(target).size()
 		end
-		scanErrands[target] = function()
+		table.insert(scanErrands, function()
 			scan(target)
-		end
+		end)
 	end
 end
 
@@ -1054,7 +1026,6 @@ local function interpretTaskEarly(taskTable, taskIndex)
 	--the scan list.
 	if earlyScanTypes[taskType] == true then
 		local target = taskTable["target"]
-		--print("Scanning "..target)
 		addScanErrand(target)
 	elseif taskType == "craft" then
 		--error("Craft-type tasks aren't implemented yet!")
@@ -1359,19 +1330,9 @@ print("Ready to go!")
 while true do
 	readAllRequests()
 	interpretTaskListEarly()
-	--So batchedParallel assumes that
-	--the input table of functions is
-	--indexed like a continuous array,
-	--but scanErrands isn't indexed
-	--like that.
-	--TODO:
-	--Make a custom one-off version of
-	--batchedParallel that works with
-	--string keys.
-	--mssU.batchedParallel(scanErrands)
-	for _, errand in pairs(scanErrands) do
-		errand()
-	end
+	--Finally got scanErrands to be
+	--executed in parallel!
+	mssU.batchedParallel(scanErrands)
 	postScanWork()
 	interpretTaskList()
 	massCombine()
