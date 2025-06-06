@@ -479,7 +479,7 @@ end
 --Indices correspond to inventories to
 --scan, values correspond to the
 --function call.
-local scanErrands = {sleep(0.05)}
+local scanErrands = {}
 
 --Return values from scanErrands.
 --Indices correspond to inventories to
@@ -528,7 +528,7 @@ end
 --List of all the push-type (exporting)
 --errands that the system needs to make
 --in this iteration of the main loop.
-local pushErrands = {sleep(0.05)}
+local pushErrands = {}
 
 local function push(target, targetSlot, source, sourceSlot, amount)
 	mssU.fastWrap(source).pushItems(target, sourceSlot, amount, targetSlot)
@@ -622,7 +622,7 @@ end
 --List of all the pull-type (importing)
 --errands that the system needs to make
 --in this iteration of the main loop.
-local pullErrands = {sleep(0.05)}
+local pullErrands = {}
 
 local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
 	addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
@@ -692,11 +692,11 @@ end
 --Resets all of the errands tables back
 --to being empty.
 local function clearAllErrands()
-	scanErrands = {sleep(0.05)}
+	scanErrands = {}
 	scanReturns = {}
-	pushErrands = {sleep(0.05)}
+	pushErrands = {}
 	shouldCraft = false
-	pullErrands = {sleep(0.05)}
+	pullErrands = {}
 end
 
 --Executes all the errands we've got
