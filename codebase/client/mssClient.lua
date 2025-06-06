@@ -767,7 +767,7 @@ end
 
 local function evalSelect(slot)
 	local tryIndex = slot + (currPage - 1) * 10
-	if tryIndex <= entryCount then
+	if tryIndex <= filteredEntryCount then
 		currSelIndex = tryIndex
 	end
 end
