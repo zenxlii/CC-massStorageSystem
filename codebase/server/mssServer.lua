@@ -6,7 +6,8 @@ local mssU = require("mssUtils")
 --Constants
 local batchSize = config.batchSize
 
-local self = "turtle_"..os.getComputerID()
+--local self = "turtle_"..os.getComputerID()
+local self = peripheral.find("modem").getNameLocal()
 
 local genInvs = config.genInvs
 
