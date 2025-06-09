@@ -386,6 +386,15 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 			addDetailsToManifest(allInvs[allInvsID], slot)
 		end
 	end
+	--In case 0 items are added.
+	if addition == 0 then
+		if manifest[eName]["data"][allInvsID] ~= nil then
+			if manifest[eName]["data"][allInvsID][slot] == nil then
+				emptySlotsTable[allInvsID][slot] = true
+			end
+		end
+		return
+	end
 	--print(eName)
 	--print(allInvsID)
 	--print(slot)
@@ -625,8 +634,9 @@ end
 local pullErrands = {}
 
 local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
-	addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
-	mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
+	emptySlotsTable[targetID][targetSlot] = false
+	local amountMoved = mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
+	addItems(eName, targetID, targetSlot, amountMoved, source, sourceSlot)
 end
 
 local function addPullErrand(source, sourceSlot, amount, eName)
