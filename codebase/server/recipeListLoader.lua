@@ -41,6 +41,7 @@ end
 --Item Renames
 local stick = "minecraft:stick"
 local plank = "minecraft:birch_planks"
+local stone = "minecraft:stone"
 local refIron = "techreborn:refined_iron_ingot"
 local bmFrame = "techreborn:basic_machine_frame"
 local eCircuit = "techreborn:electronic_circuit"
@@ -53,6 +54,7 @@ makeCTableRecipe({plank,4},64,{"minecraft:birch_log"})
 makeCTableRecipe({bmFrame,1},64,{refIron,refIron,refIron,refIron,nil,refIron,refIron,refIron,refIron})
 makeCTableRecipe({treetap,1},16,{nil,stick,nil,plank,plank,plank,plank})
 --Tech Reborn Machines
+makeCTableRecipe({"techreborn:compressor",1},64,{stone,nil,stone,stone,bmFrame,stone,stone,eCircuit,stone})
 makeCTableRecipe({"techreborn:extractor",1},1,{treetap,bmFrame,treetap,treetap,eCircuit,treetap})
 
 return{
