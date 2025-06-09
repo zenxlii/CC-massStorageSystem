@@ -35,21 +35,46 @@ rednet.host("mssClient", self)
 --input number.
 --Only works for natural numbers!
 --And zero doesn't count!
+--Technically needs an input number
+--that is at least 100 to work.
 local function sfAndPow(natNum)
 	local nStr = tostring(natNum)
-	local pow = #nStr - 1
+	local power = #nStr - 1
+	local sf = string.sub(nStr,1,3)
+	return nStr, sf, power
+end
+
+local function makeCompactNotation(sf, power)
+	local outStr = ""
+	if power % 3 == 0 then
+		outStr = string.sub(sf,1,1).."."..string.sub(sf,2,3)
+	elseif power % 3 == 1 then
+		outStr = string.sub(sf,1,2).."."..string.sub(sf,3,3)
+	elseif power % 3 == 2 then
+		outStr = sf
+	end
+	if power < 7 then
+		outStr = outStr.."K"
+	elseif power < 10 then
+		outStr = outStr.."M"
+	elseif power < 13 then
+		outStr = outStr.."G"
+	elseif power > 12 then
+		term.clear()
+		term.setCursorPos(1,1)
+		error("Why do you have over 100 billion of an item?")
+	end
+	return outStr
 end
 
 --Adds suffixes like "K" and "M" to
 --the supplied number as appropriate.
 local function displayConverter(natNum)
-	local nStr = tostring(natNum)
-	if natNum < 10000 then
+	local nStr, sf, power = sfAndPow(natNum)
+	if natNum < 1000 then
 		return nStr
-	elseif natNum < 1000000 then
-		
 	else
-		
+		return makeCompactNotation(sf, power)
 	end
 end
 
@@ -162,7 +187,7 @@ local function sortDisplayNames()
 	--with all the display names.
 	sortedNames = {}
 	for eName, entry in pairs(displayManifest) do
-		--local displayAmount = displayConverter(amount)
+		entry["displayAmount"] = displayConverter(entry["amount"])
 		table.insert(sortedNames, {entry["displayName"], eName, ""})
 	end
 	--Sort sortedNames alphabetically.
@@ -178,6 +203,7 @@ local function sortDisplayNames()
 end
 
 local function applySearchFilter()
+	local lcSearch = string.lower(searchString)
 	filteredSortedNames = {}
 	for index, entry in ipairs(sortedNames) do
 		local caselessDName = string.lower(entry[1])
@@ -186,7 +212,7 @@ local function applySearchFilter()
 		--search string in either the
 		--full display name or the
 		--shortened display name.
-		if string.find(caselessDName, searchString) or string.find(caselessDNameShort, searchString) then
+		if string.find(caselessDName, lcSearch) or string.find(caselessDNameShort, lcSearch) then
 			table.insert(filteredSortedNames, {entry[1], entry[2], entry[3]})
 		end
 	end
@@ -346,7 +372,7 @@ local function drawItemList()
 		if #dName > 19 then
 			dName = string.sub(dName,1,19)
 		end
-		local amount = displayManifest[names[2]]["amount"]
+		local amount = displayManifest[names[2]]["displayAmount"]
 		--If this happens to be the
 		--selected index, highlight it.
 		if globalIndex == currSelIndex then
