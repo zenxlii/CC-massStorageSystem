@@ -634,7 +634,6 @@ end
 local pullErrands = {}
 
 local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
-	emptySlotsTable[targetID][targetSlot] = false
 	local amountMoved = mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
 	addItems(eName, targetID, targetSlot, amountMoved, source, sourceSlot)
 end
@@ -661,10 +660,20 @@ local function addPullErrand(source, sourceSlot, amount, eName)
 			break
 		end
 	end
+	--Give up if we can't find a slot
+	--to insert into.
+	if targetID == false then
+		return
+	end
 	table.insert(pullErrands, function()
 		pull(genInvs[targetID], targetSlot, source, sourceSlot, amount, eName, targetID)
 	end)
-	--addItems(eName, targetID, targetSlot, amount, source, sourceSlot)
+	--Designate the slot as being
+	--occupied now, so that other calls
+	--to addPullErrand() in this main
+	--loop iteration can put stuff into
+	--the system.
+	emptySlotsTable[targetID][targetSlot] = false
 end
 
 --Quickly dumps everything in the
