@@ -388,7 +388,9 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 	end
 	--In case 0 items are added.
 	if addition == 0 then
-		if manifest[eName]["data"][allInvsID] ~= nil then
+		if manifest[eName]["data"][allInvsID] == nil then
+			emptySlotsTable[allInvsID][slot] = true
+		else
 			if manifest[eName]["data"][allInvsID][slot] == nil then
 				emptySlotsTable[allInvsID][slot] = true
 			end
