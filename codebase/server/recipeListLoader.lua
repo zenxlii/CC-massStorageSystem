@@ -38,9 +38,22 @@ end
 --then have a final file require all of
 --the individual recipe adder files.
 
-makeCTableRecipe({"minecraft:redstone_torch",1},64,{"minecraft:redstone",nil,nil,"minecraft:stick"})
-makeCTableRecipe({"minecraft:stick",4},64,{"minecraft:birch_planks",nil,nil,"minecraft:birch_planks"})
-makeCTableRecipe({"minecraft:birch_planks",4},64,{"minecraft:birch_log"})
+--Item Renames
+local stick = "minecraft:stick"
+local plank = "minecraft:birch_planks"
+local refIron = "techreborn:refined_iron_ingot"
+local bmFrame = "techreborn:basic_machine_frame"
+local eCircuit = "techreborn:electronic_circuit"
+local treetap = "techreborn:treetap#552887824c43124013fd24f6edcde0fb"
+--Generic Components
+makeCTableRecipe({"minecraft:redstone_torch",1},64,{"minecraft:redstone",nil,nil,stick})
+makeCTableRecipe({stick,4},64,{plank,nil,nil,plank})
+makeCTableRecipe({plank,4},64,{"minecraft:birch_log"})
+--Tech Reborn Components
+makeCTableRecipe({bmFrame,1},64,{refIron,refIron,refIron,refIron,nil,refIron,refIron,refIron,refIron})
+makeCTableRecipe({treetap,1},16,{nil,stick,nil,plank,plank,plank,plank})
+--Tech Reborn Machines
+makeCTableRecipe({"techreborn:extractor",1},1,{treetap,bmFrame,treetap,treetap,eCircuit,treetap})
 
 return{
 recipeList = recipeList
