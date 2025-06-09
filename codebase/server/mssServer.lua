@@ -635,7 +635,7 @@ local pullErrands = {}
 
 local function pull(target, targetSlot, source, sourceSlot, amount, eName, targetID)
 	local amountMoved = mssU.fastWrap(target).pullItems(source, sourceSlot, amount, targetSlot)
-	addItems(eName, targetID, targetSlot, amountMoved, source, sourceSlot)
+	addItems(eName, targetID, targetSlot, amountMoved)
 end
 
 local function addPullErrand(source, sourceSlot, amount, eName)
