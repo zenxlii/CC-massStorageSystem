@@ -1119,14 +1119,14 @@ local function condenseTask(condenseTableKey)
 			fixedPushSpreader(self, slot, inputName, crafts)
 		end
 		addCraftErrand()
-		addPullErrand(self, 1, crafts, outputName)
+		addPullErrand(self, 16, crafts, outputName)
 	elseif condenseType == "2x2" then
 		local insertSlots = {1,2,5,6}
 		for _, slot in ipairs(insertSlots) do
 			fixedPushSpreader(self, slot, inputName, crafts)
 		end
 		addCraftErrand()
-		addPullErrand(self, 1, crafts, outputName)
+		addPullErrand(self, 16, crafts, outputName)
 	end
 end
 
@@ -1452,6 +1452,7 @@ table.insert(masterTaskList, procSysDumpImportTask)
 
 --Main Server Loop
 
+turtle.select(16)
 initialiseManifest()
 local testTask = {}
 testTask["taskType"] = "supply"
@@ -1463,6 +1464,8 @@ testTask["target"] = "expandedstorage:chest_3"
 
 print("Ready to go!")
 
+local flipper = true
+
 while true do
 	readAllRequests()
 	interpretTaskListEarly()
@@ -1471,8 +1474,13 @@ while true do
 	mssU.batchedParallel(scanErrands)
 	postScanWork()
 	interpretTaskList()
-	massCombine()
-	findCondense()
+	if flipper then
+		massCombine()
+		flipper = false
+	else
+		findCondense()
+		flipper = true
+	end
 	executeAllErrands()
 	--Make sure that manifestFile is
 	--up-to-date with the latest
