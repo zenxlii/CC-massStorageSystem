@@ -6,7 +6,6 @@ local mssU = require("mssUtils")
 --Constants
 local batchSize = config.batchSize
 
---local self = "turtle_"..os.getComputerID()
 local self = peripheral.find("modem").getNameLocal()
 
 local genInvs = config.genInvs
@@ -397,18 +396,7 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 		end
 		return
 	end
-	--print(eName)
-	--print(allInvsID)
-	--print(slot)
-	--print(addition)
-	--print(scanInv)
-	--print(scanSlot)
-	--error("Breakpoint!", 2)
-	--print(manifest[eName])
-	--print(manifest[eName]["data"])
 	if manifest[eName]["data"][allInvsID] == nil then
-		--print(manifest[eName]["data"][allInvsID])
-		--error("Breakpoint!", 2)
 		manifest[eName]["data"][allInvsID] = {}
 		manifest[eName]["data"][allInvsID][slot] = addition
 	elseif manifest[eName]["data"][allInvsID][slot] == nil then
@@ -651,7 +639,6 @@ local function addPullErrand(source, sourceSlot, amount, eName)
 	for genInvsID, container in pairs(emptySlotsTable) do
 		for slotID, state in pairs(container) do
 			if state == true then
-				--print("Inv "..genInvsID.." slot "..slotID.." is empty!")
 				targetID = genInvsID
 				targetSlot = slotID
 				breaker = true
@@ -1005,9 +992,7 @@ local function craftTask(taskTable)
 	--of this item happen with what is
 	--currently in the system.
 	local maxCraft = maxCanCraft(recipe[3], recipe[2])
-	--print(maxCraft)
 	local craftsToDo = math.ceil(amountLeft/recipe[1])
-	--print(craftsToDo)
 	maxCraft = math.min(maxCraft, craftsToDo)
 	if maxCraft == 0 then
 		return amountLeft
@@ -1113,7 +1098,6 @@ local function interpretTaskEarly(taskTable, taskIndex)
 	--items left to go, delete it.
 	local taskType = taskTable.taskType
 	if taskType == "output" or taskType == "craft" then
-		--print("Amount check done!")
 		if taskTable["amount"] <= 0 then
 			print("A "..taskType.." task for "..taskTable.eName.." is totally done")
 			masterTaskList[taskIndex] = nil
@@ -1126,8 +1110,9 @@ local function interpretTaskEarly(taskTable, taskIndex)
 		local target = taskTable["target"]
 		addScanErrand(target)
 	elseif taskType == "craft" then
-		--error("Craft-type tasks aren't implemented yet!")
-		--print("Attempting to craft "..taskTable["eName"])
+		--TODO:
+		--Make scanning for craft tasks
+		--dependent on the craft type.
 	end
 end
 
@@ -1233,7 +1218,6 @@ end
 
 --
 local function checkCraftViabilityStep(eName, amount, craftManifest)
-	--print(eName)
 	craftManifest[eName]["wantedTotal"] = craftManifest[eName]["wantedTotal"] + amount
 	distributeWantedTotal(eName, craftManifest)
 	if craftManifest[eName]["amountToMake"] > 0 then
@@ -1268,7 +1252,6 @@ end
 --craft tasks/jobs for this request if
 --it is doable.
 local function checkCraftViability(eName, amount)
-	--print(eName)
 	--This can be used to effectively
 	--make a deep copy of the "free"
 	--part of the manifest.
@@ -1296,14 +1279,7 @@ local function checkCraftViability(eName, amount)
 	end
 	--By reaching here, we know that
 	--the entire request is doable.
-	--[[
-	print("The craft is possible!")
-	for eName, item in pairs(craftManifest) do
-		if item["wantedTotal"] > 0 then
-			print(eName.." takes "..item["amountToTake"].." and makes "..item["amountToMake"])
-		end
-	end
-	]]
+	
 	--Because this is the "master" of
 	--the checking chain, if it turns
 	--out that the craft is doable,
@@ -1415,21 +1391,6 @@ testTask["amount"] = 8
 testTask["target"] = "expandedstorage:chest_3"
 --testTask["isDumb"] = true
 --masterTaskList[1] = testTask
-
-local testTask2 = {}
-testTask2["taskType"] = "craft"
-testTask2["eName"] = "minecraft:redstone_torch"
-testTask2["amount"] = 1
---table.insert(masterTaskList, testTask2)
-
-local testTask3 = {}
-testTask3["taskType"] = "output"
-testTask3["eName"] = "minecraft:redstone_torch"
-testTask3["amount"] = 1
-testTask3["target"] = clientExportBuffer
---table.insert(masterTaskList, testTask3)
-
---checkCraftViability("minecraft:redstone_torch", 1)
 
 print("Ready to go!")
 
