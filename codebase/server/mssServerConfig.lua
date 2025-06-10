@@ -30,6 +30,22 @@ table.insert(condenseTable, {"techreborn:tin_nugget", "3x3", "techreborn:tin_ing
 table.insert(condenseTable, {"techreborn:tin_ingot", "3x3", "techreborn:tin_storage_block", 64})
 table.insert(condenseTable, {"techreborn:nickel_nugget", "3x3", "techreborn:nickel_ingot", 64})
 table.insert(condenseTable, {"techreborn:nickel_ingot", "3x3", "techreborn:nickel_storage_block", 64})
+table.insert(condenseTable, {"techreborn:silver_nugget", "3x3", "techreborn:silver_ingot", 64})
+table.insert(condenseTable, {"techreborn:silver_ingot", "3x3", "techreborn:silver_storage_block", 64})
+table.insert(condenseTable, {"techreborn:lead_nugget", "3x3", "techreborn:lead_ingot", 64})
+table.insert(condenseTable, {"techreborn:lead_ingot", "3x3", "techreborn:lead_storage_block", 64})
+table.insert(condenseTable, {"techreborn:platinum_nugget", "3x3", "techreborn:platinum_ingot", 64})
+table.insert(condenseTable, {"techreborn:platinum_ingot", "3x3", "techreborn:platinum_storage_block", 64})
+table.insert(condenseTable, {"techreborn:aluminum_nugget", "3x3", "techreborn:aluminum_ingot", 64})
+table.insert(condenseTable, {"techreborn:aluminum_ingot", "3x3", "techreborn:aluminum_storage_block", 64})
+table.insert(condenseTable, {"techreborn:chrome_nugget", "3x3", "techreborn:chrome_ingot", 64})
+table.insert(condenseTable, {"techreborn:chrome_ingot", "3x3", "techreborn:chrome_storage_block", 64})
+table.insert(condenseTable, {"techreborn:iridium_nugget", "3x3", "techreborn:iridium_ingot", 64})
+table.insert(condenseTable, {"techreborn:iridium_ingot", "3x3", "techreborn:iridium_storage_block", 64})
+table.insert(condenseTable, {"techreborn:titanium_nugget", "3x3", "techreborn:titanium_ingot", 64})
+table.insert(condenseTable, {"techreborn:titanium_ingot", "3x3", "techreborn:titanium_storage_block", 64})
+table.insert(condenseTable, {"techreborn:tungsten_nugget", "3x3", "techreborn:tungsten_ingot", 64})
+table.insert(condenseTable, {"techreborn:tungsten_ingot", "3x3", "techreborn:tungsten_storage_block", 64})
 
 return{
 condenseTable = condenseTable
