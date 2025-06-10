@@ -2,6 +2,7 @@
 local config = require("config")
 local rll = require("recipeListLoader")
 local mssU = require("mssUtils")
+local serverConfig = require("mssServerConfig")
 
 --Constants
 local batchSize = config.batchSize
@@ -28,6 +29,8 @@ local modemSide = config.modemSide
 rednet.open(modemSide)
 
 local recipeList = rll.recipeList
+
+local condenseTable = serverConfig.condenseTable
 
 --Manifest Stuff
 
@@ -1084,6 +1087,72 @@ local function massCombine()
 	end
 end
 
+--Condense task logic, basically a
+--hard-coded special case of a craft
+--task that executes entirely within a
+--single main loop iteration.
+local function condenseTask(condenseTableKey)
+	local inputName = condenseTable[condenseTableKey][1]
+	local condenseType = condenseTable[condenseTableKey][2]
+	local outputName = condenseTable[condenseTableKey][3]
+	local maxBatch = condenseTable[condenseTableKey][4]
+	local amountFree = manifest[inputName]["free"]
+	local crafts = 0
+	local canDo = false
+	if condenseType == "3x3" then
+		local rawCrafts = math.floor(amountFree/9)
+		crafts = math.min(rawCrafts, maxBatch)
+		canDo = freeToReserved(inputName, crafts*9)
+	elseif condenseType == "2x2" then
+		local rawCrafts = math.floor(amountFree/4)
+		crafts = math.min(rawCrafts, maxBatch)
+		canDo = freeToReserved(inputName, crafts*4)
+	else
+		error(condenseType.." is not a valid condense type!",2)
+	end
+	if crafts == 0 or canDo == false then
+		return
+	end
+	if condenseType == "3x3" then
+		local insertSlots = {1,2,3,5,6,7,9,10,11}
+		for _, slot in ipairs(insertSlots) do
+			fixedPushSpreader(self, slot, inputName, crafts)
+		end
+		addCraftErrand()
+		addPullErrand(self, 1, crafts, outputName)
+	elseif condenseType == "2x2" then
+		local insertSlots = {1,2,5,6}
+		for _, slot in ipairs(insertSlots) do
+			fixedPushSpreader(self, slot, inputName, crafts)
+		end
+		addCraftErrand()
+		addPullErrand(self, 1, crafts, outputName)
+	end
+end
+
+--Looks through the list of condensable
+--items and picks one of them to
+--condense, but only if no craft is
+--scheduled for this main loop
+--iteration.
+local function findCondense()
+	if shouldCraft then
+		return
+	end
+	for condenseTableKey, entry in ipairs(condenseTable) do
+		local minItems = math.huge
+		if entry[2] == "3x3" then
+			minItems = 9
+		elseif entry[2] == "2x2" then
+			minItems = 4
+		end
+		if manifest[entry[1]]["free"] >= minItems then
+			condenseTask(condenseTableKey)
+			return
+		end
+	end
+end
+
 local earlyScanTypes = {}
 earlyScanTypes["output"] = true
 earlyScanTypes["export"] = true
@@ -1403,6 +1472,7 @@ while true do
 	postScanWork()
 	interpretTaskList()
 	massCombine()
+	findCondense()
 	executeAllErrands()
 	--Make sure that manifestFile is
 	--up-to-date with the latest
