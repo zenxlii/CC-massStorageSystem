@@ -6,8 +6,20 @@
 --2. Recipe type.
 --3. Output encoded name.
 --4. Maximum batch craft size.
+--Note that situations such as nuggets
+--to ingots to blocks should have the
+--nugget to ingot recipe be inserted
+--into condenseTable before the ingot
+--to block recipe.
 local condenseTable = {}
 table.insert(condenseTable, {"minecraft:redstone", "3x3", "minecraft:redstone_block", 64})
+table.insert(condenseTable, {"minecraft:lapis_lazuli", "3x3", "minecraft:lapis_block", 64})
+table.insert(condenseTable, {"minecraft:iron_nugget", "3x3", "minecraft:iron_ingot", 64})
+table.insert(condenseTable, {"minecraft:iron_ingot", "3x3", "minecraft:iron_block", 64})
+table.insert(condenseTable, {"minecraft:gold_nugget", "3x3", "minecraft:gold_ingot", 64})
+table.insert(condenseTable, {"minecraft:gold_ingot", "3x3", "minecraft:gold_block", 64})
+table.insert(condenseTable, {"create:copper_nugget", "3x3", "minecraft:copper_ingot", 64})
+table.insert(condenseTable, {"minecraft:copper_ingot", "3x3", "minecraft:copper_block", 64})
 
 return{
 condenseTable = condenseTable
