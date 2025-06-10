@@ -23,6 +23,13 @@ table.insert(condenseTable, {"minecraft:gold_nugget", "3x3", "minecraft:gold_ing
 table.insert(condenseTable, {"minecraft:gold_ingot", "3x3", "minecraft:gold_block", 64})
 table.insert(condenseTable, {"create:copper_nugget", "3x3", "minecraft:copper_ingot", 64})
 table.insert(condenseTable, {"minecraft:copper_ingot", "3x3", "minecraft:copper_block", 64})
+table.insert(condenseTable, {"minecraft:clay_ball", "2x2", "minecraft:clay", 64})
+table.insert(condenseTable, {"create:zinc_nugget", "3x3", "create:zinc_ingot", 64})
+table.insert(condenseTable, {"create:zinc_ingot", "3x3", "create:zinc_block", 64})
+table.insert(condenseTable, {"techreborn:tin_nugget", "3x3", "techreborn:tin_ingot", 64})
+table.insert(condenseTable, {"techreborn:tin_ingot", "3x3", "techreborn:tin_storage_block", 64})
+table.insert(condenseTable, {"techreborn:nickel_nugget", "3x3", "techreborn:nickel_ingot", 64})
+table.insert(condenseTable, {"techreborn:nickel_ingot", "3x3", "techreborn:nickel_storage_block", 64})
 
 return{
 condenseTable = condenseTable

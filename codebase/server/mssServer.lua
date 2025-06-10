@@ -1146,9 +1146,11 @@ local function findCondense()
 		elseif entry[2] == "2x2" then
 			minItems = 4
 		end
-		if manifest[entry[1]]["free"] >= minItems then
-			condenseTask(condenseTableKey)
-			return
+		if manifest[entry[1]] then
+			if manifest[entry[1]]["free"] >= minItems then
+				condenseTask(condenseTableKey)
+				return
+			end
 		end
 	end
 end
