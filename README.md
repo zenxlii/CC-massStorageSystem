@@ -26,3 +26,10 @@ A willingness to work with software that has not yet been made easy-to-install a
 2. If anything other than the server turtle adds, removes, moves or otherwise alters the states of the general storage inventories while the server turtle is running mssServer.lua, then the in-memory manifest will no longer be representative of the actual states of the inventories and this can be rectified by terminating and running mssServer.lua again.
 3. Storage system behaviour when there are very few to no empty slots of general storage remaining is currently unknown.
 4. The on-disk manifestFile must be a single file and present on a single Disk Drive, which limits the size of manifestFile to 125KB (by default) if a Floppy Disk is inserted into that Disk Drive, or 1MB (by default) if any Computer is inserted into that Disk Drive, however this limitation should only come up when dealing with over 1200 distinct items (although the first limitation can make this problem come up sooner).
+
+# (Rough and Temporary) Installation Guide
+1. Ensure that you have everything mentioned in [Setup Requirements](#setup-requirements) available to you.
+2. Place down your general storage inventories somewhere, making sure that exactly one Wired Modem is connected to each inventory (full block Wired Modems can connect to inventories on all of their sides, while the small ones can only connect to whatever block their model is physically touching) and that all of these Wired Modems are connected to one another through either other Wired Modems or Networking Cable.
+3. Place down the Advanced Crafty Turtle and the two remaining inventories somewhere, preferably a bit separated from your general storage area and next to each other, as this should help with debugging issues if you have any later down the line, remembering to also connect these peripherals to Wired Modems and to the general storage peripheral network.
+4. Also near the Advanced Crafty Turtle (recommended), place down the two Disk Drives and make sure they are hooked up to the wired network, before placing a Floppy Disk in each Disk Drive.
+5. (to be continued)
