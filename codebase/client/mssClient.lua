@@ -179,6 +179,30 @@ local drawAmount = 1
 --take before it is satisfied.
 local thingsToTake = {}
 
+--The event ID of the currently-active
+--timer event, which is used for things
+--like auto-scrolling text displays.
+local currTimerID = false
+
+--Either contains the display name for
+--the item that's in focus (if the
+--item's name is 14 characters long or
+--shorter) or the display name with
+--"|    " appended to it so that it
+--looks nicer when scrolled, as well as
+--a second copy of the name as to allow
+--for continuous scrolling.
+local focusCardNameText = ""
+
+--The first character of the variable
+--focusCardNameText to show in the
+--text readout at this point in time.
+local focusCardNameScrollPos = 1
+
+local function setFocusCardNameText()
+
+end
+
 --Fills and sorts sortedNames, as well
 --as setting some key variables for
 --later referencing.
@@ -408,6 +432,15 @@ local function drawPageWarning(highLow)
 	end
 end
 
+local function drawFocusNameText(isNewText)
+	if isNewText then
+		os.cancelTimer(currTimerID)
+		focusCardNameScrollPos = 1
+	else
+		
+	end
+end
+
 local function drawFocusCardItem()
 	--Draw the in-focus item card.
 	--This depends on how many of the
@@ -422,12 +455,18 @@ local function drawFocusCardItem()
 		end
 		
 	end
-	box(26,2,39,8,boxColour)
+	box(26,2,26,8,colours.lightGrey)
+	box(27,2,39,8,boxColour)
 	tCol(colours.white)
-	pos(26,4)
+	--Writes the amount text.
+	pos(27,4)
 	write("Amount:")
 	pos(27,5)
 	write(currSelAmount)
+	--Writes the name text.
+	pos(27,2)
+	write("Name:")
+	drawFocusNameText(true)
 	--Informs the user that this item
 	--is craftable by the system.
 	if currSelIndex then
@@ -795,6 +834,7 @@ local function evalSelect(slot)
 	local tryIndex = slot + (currPage - 1) * 10
 	if tryIndex <= filteredEntryCount then
 		currSelIndex = tryIndex
+		--setFocusCardNameText(currSelIndex)
 	end
 end
 
@@ -929,6 +969,8 @@ local function mainLoop()
 		local charPressed = eventData[2]
 		searchBarText = searchBarText..charPressed
 		writeSearchBarText()
+	elseif event == "timer"
+		
     end
 end
 
