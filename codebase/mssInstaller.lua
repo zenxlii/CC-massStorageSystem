@@ -1,5 +1,54 @@
+local inString = ""
 
+--A function that takes user input then
+--lowercases it all.
+local function getInput()
+	return string.lower(io.read())
+end
 
+--Start by checking the directory
+--structure of this computer.
+--If it has massStorageSystem at the
+--root of its local storage, then we
+--have a prior install.
+local installMode = false
+if fs.exists("massStorageSystem") then
+	while installMode == false then
+		print("It seems that you have installed")
+		print("massStorageSystem previously.")
+		print("Would you like to:")
+		print("Make a [F]resh install?")
+		print("[U]pdate the existing installation?")
+		print("[C]ancel this script's execution?")
+		inString = getInput()
+		if inString == "f" then
+			
+		elseif inString == "u" then
+			
+		elseif inString == "c" then
+			installMode = "cancel"
+		else
+			print("Not a valid value!")
+		end
+	end
+else
+	while installMode == false then
+		print("Would you like to install")
+		print("massStorageSystem? [Y]es or [N]o?")
+		inString = getInput()
+		if inString == "y" then
+			installMode = "install"
+		elseif inString == "n" then
+			installMode = "cancel"
+		else
+			print("Not a valid value!")
+		end
+	end
+end
+
+if installMode == "cancel" then
+	return
+end
 
 
 
@@ -8,7 +57,7 @@
 
 local repo = "https://raw.githubusercontent.com/zenxlii/CC-massStorageSystem/refs/heads/main/codebase/"
 
-local inString = ""
+
 local installType = false
 while not installType do
 	print("What would you like to install?")
