@@ -175,6 +175,7 @@ local function installMSS()
 				if inString == "n" then
 					commonCodeDrive = false
 				elseif inString ~= "y" then
+					commonCodeDrive = false
 					print("Not a valid value!")
 				end
 			else
@@ -249,6 +250,7 @@ local function installMSS()
 				if inString == "n" then
 					manifestDrive = false
 				elseif inString ~= "y" then
+					manifestDrive = false
 					print("Not a valid value!")
 				end
 			else
@@ -302,6 +304,79 @@ local function installMSS()
 	--Ask the user to identify which
 	--inventory they want to use as the
 	--client import buffer.
+	local importBuffer = false
+	while not importBuffer do
+		print("")
+		print("Please connect a chest-like inventory")
+		print("to this turtle's wired network, and")
+		print("then type in the peripheral name of it.")
+		inString = getInput()
+		if mRef.isPresentRemote(inString) then
+			if mRef.hasTypeRemote(inString, "inventory") then
+				print("")
+				print("Do you want to make the inventory")
+				print(inString)
+				print("the import buffer inventory?")
+				print("[Y]es or [N]o.")
+				importBuffer = inString
+				inString = getInput()
+				if inString == "n" then
+					importBuffer = false
+				elseif inString ~= "y" then
+					importBuffer = false
+					print("Not a valid value!")
+				end
+			else
+				print(inString)
+				print("is not an inventory!")
+			end
+		else
+			print(inString)
+			print("is not a present peripheral!")
+		end
+	end
+	--Ask the user to identify which
+	--inventory they want to use as the
+	--client export buffer.
+	local exportBuffer = false
+	while not exportBuffer do
+		print("")
+		print("Please connect a chest-like inventory")
+		print("to this turtle's wired network, and")
+		print("then type in the peripheral name of it.")
+		inString = getInput()
+		--Special case to prevent the
+		--import and export buffers
+		--from being the exact same
+		--inventory.
+		if inString == importBuffer then
+			print("")
+			print("The import and export buffers cannot be")
+			print("the same inventory!")
+		elseif mRef.isPresentRemote(inString) then
+			if mRef.hasTypeRemote(inString, "inventory") then
+				print("")
+				print("Do you want to make the inventory")
+				print(inString)
+				print("the export buffer inventory?")
+				print("[Y]es or [N]o.")
+				exportBuffer = inString
+				inString = getInput()
+				if inString == "n" then
+					exportBuffer = false
+				elseif inString ~= "y" then
+					exportBuffer = false
+					print("Not a valid value!")
+				end
+			else
+				print(inString)
+				print("is not an inventory!")
+			end
+		else
+			print(inString)
+			print("is not a present peripheral!")
+		end
+	end
 end
 
 if installMode == "cancel" then
