@@ -377,6 +377,53 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	--Ask the user to identify which
+	--inventory they want to use as
+	--their system's first general
+	--storage inventory.
+	local startingGenStorage = false
+	while not startingGenStorage do
+		print("")
+		print("Please connect a chest-like inventory")
+		print("to this turtle's wired network, and")
+		print("then type in the peripheral name of it.")
+		inString = getInput()
+		--Special case to prevent the
+		--import and export buffers
+		--from being the exact same
+		--inventory.
+		if inString == importBuffer then
+			print("")
+			print("The import buffer and general storage")
+			print("cannot be the same inventory!")
+		elseif inString == exportBuffer then
+			print("")
+			print("The export buffer and general storage")
+			print("cannot be the same inventory!")
+		elseif mRef.isPresentRemote(inString) then
+			if mRef.hasTypeRemote(inString, "inventory") then
+				print("")
+				print("Do you want to make the inventory")
+				print(inString)
+				print("the first general storage inventory?")
+				print("[Y]es or [N]o.")
+				startingGenStorage = inString
+				inString = getInput()
+				if inString == "n" then
+					startingGenStorage = false
+				elseif inString ~= "y" then
+					startingGenStorage = false
+					print("Not a valid value!")
+				end
+			else
+				print(inString)
+				print("is not an inventory!")
+			end
+		else
+			print(inString)
+			print("is not a present peripheral!")
+		end
+	end
 end
 
 if installMode == "cancel" then
