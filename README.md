@@ -14,7 +14,7 @@ A personal attempt at creating a Logistics Pipes/Refined Storage/Applied Energis
 
 # Setup Requirements
 1 (or more) Advanced Turtle(-s) as client(-s).\
-1 Advanced Crafty Turtle as the server (might be able to get away with a standard Craft Turtle here, but that hasn't been tested).\
+1 Advanced Crafty Turtle as the server (might be able to get away with a standard Crafty Turtle here, but that hasn't been tested).\
 2 Disk Drives (one for storing manifestFile, the other for storing client and shared program files).\
 2 Floppy Disks (one for each Disk Drive).\
 At least 3 chest-like inventories (one is reserved for items pulled from the clients, one is reserved for items being sent to clients, and the rest are for general storage).\
@@ -29,7 +29,8 @@ A willingness to work with software that has not yet been made easy-to-install a
 
 # (Rough and Temporary) Installation Guide
 1. Ensure that you have everything mentioned in [Setup Requirements](#setup-requirements) available to you.
-2. Place down your general storage inventories somewhere, making sure that exactly one Wired Modem is connected to each inventory (full block Wired Modems can connect to inventories on all of their sides, while the small ones can only connect to whatever block their model is physically touching) and that all of these Wired Modems are connected to one another through either other Wired Modems or Networking Cable.
-3. Place down the Advanced Crafty Turtle and the two remaining inventories somewhere, preferably a bit separated from your general storage area and next to each other, as this should help with debugging issues if you have any later down the line, remembering to also connect these peripherals to Wired Modems and to the general storage peripheral network.
-4. Also near the Advanced Crafty Turtle (recommended), place down the two Disk Drives and make sure they are hooked up to the wired network, before placing a Floppy Disk in each Disk Drive.
-5. (to be continued)
+2. Place down the (Advanced) Crafty Turtle where you would want the server turtle to be in your storage system.
+3. Type the following line into said turtle: (ADD LINE LATER)
+4. Run the `mssInstaller.lua` file that you just downloaded.
+5. Follow the installer's instructions.
+6. For further customisation and setup of your storage system, see the various configuration files for the project and edit those.
