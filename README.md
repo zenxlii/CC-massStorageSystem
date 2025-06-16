@@ -20,6 +20,9 @@ A personal attempt at creating a Logistics Pipes/Refined Storage/Applied Energis
 At least 3 chest-like inventories (one is reserved for items pulled from the clients, one is reserved for items being sent to clients, and the rest are for general storage).\
 Enough Wired Modems and Networking Cable to connect all of the peripherals to the same wired network.\
 A willingness to work with software that has not yet been made easy-to-install and dive into the source code files to make setup changes.\
+One of the following:\
+ComputerCraft: Restitched version 1.101.2 or higher, or\
+ComputerCraft: Tweaked version 1.94 or higher (untested on CC:T, but this is the earliest version with the `inventory` generic peripheral present).\
 
 # Known Limitations
 1. This storage system currently does not handle enchanted items, damaged items or potions very well (or items which keep a lot of data within NBT tags in general, such as machines that keep their inventories when picked up).
