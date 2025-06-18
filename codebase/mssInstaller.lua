@@ -463,6 +463,7 @@ local function installMSS()
 	--now, so next we can create the
 	--directory structure.
 	fs.makeDir("mss/configFiles/")
+	fs.makeDir("mss/recipes/")
 	fs.makeDir(commonCodePath.."/mss/configFiles/")
 	fs.makeDir(commonCodePath.."/mss/requests/")
 	--Next, download the actual files.
