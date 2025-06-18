@@ -462,12 +462,12 @@ local function installMSS()
 	--initial peripherals defined by
 	--now, so next we can create the
 	--directory structure.
-	fs.makeDir("mss/configFiles")
-	fs.makeDir(commonCodePath.."/mss/configFiles")
-	fs.makeDir(commonCodePath.."/mss/requests")
+	fs.makeDir("mss/configFiles/")
+	fs.makeDir(commonCodePath.."/mss/configFiles/")
+	fs.makeDir(commonCodePath.."/mss/requests/")
 	--Next, download the actual files.
 	--print("Current end point reached!")
-	downloadFile("mss", "server/mssServer.lua")
+	downloadFile("mss/", "server/mssServer.lua")
 end
 
 if installMode == "cancel" then
