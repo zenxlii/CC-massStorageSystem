@@ -473,7 +473,8 @@ local function installMSS()
 	downloadFile(commonCodePath.."mss/configFiles/allowedShorthands.lua", "client/allowedShorthands.lua")
 	downloadFile(commonCodePath.."mss/mssUtils.lua", "common/mssUtils.lua")
 	downloadFile(commonCodePath.."mss/configFiles/condenseList.lua", "server/condenseList.lua")
-	
+	--Also need to construct a config
+	--file or two.
 end
 
 if installMode == "cancel" then
