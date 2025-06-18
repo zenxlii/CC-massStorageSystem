@@ -13,7 +13,7 @@ end
 --have a prior install.
 local installMode = false
 if fs.exists("massStorageSystem") then
-	while installMode == false then
+	while installMode == false do
 		print("It seems that you have installed")
 		print("massStorageSystem previously.")
 		print("Would you like to:")
@@ -32,7 +32,7 @@ if fs.exists("massStorageSystem") then
 		end
 	end
 else
-	while installMode == false then
+	while installMode == false do
 		print("Would you like to install")
 		print("massStorageSystem? [Y]es or [N]o?")
 		inString = getInput()
@@ -424,6 +424,15 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	--This should be all of the
+	--initial peripherals defined by
+	--now, so next we can create the
+	--directory structure.
+	fs.makeDir("mss/configFiles")
+	fs.makeDir(commonCodePath.."/mss/configFiles")
+	fs.makeDir(commonCodePath.."/mss/requests")
+	--Next, download the actual files.
+	print("Current end point reached!")
 end
 
 if installMode == "cancel" then
