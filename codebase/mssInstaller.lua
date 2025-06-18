@@ -467,7 +467,7 @@ local function installMSS()
 	fs.makeDir(commonCodePath.."/mss/requests/")
 	--Next, download the actual files.
 	--print("Current end point reached!")
-	downloadFile("mss/", "server/mssServer.lua")
+	downloadFile("mss/mssServer.lua", "server/mssServer.lua")
 end
 
 if installMode == "cancel" then
