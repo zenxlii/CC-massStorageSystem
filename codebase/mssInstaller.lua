@@ -86,6 +86,19 @@ local function lookForWiredModem()
 	return modemSide
 end
 
+--Modified from the installer.lua file
+--of CC-MISC.
+--Downloads a file from the Internet
+--and saves it to a specified location.
+local function downloadFile(path, url)
+	print(string.format("Installing %s to %s", repo..url, path))
+	local response = assert(http.get(repo..url, nil, true), "Failed to get " .. repo..url)
+	local f = assert(fs.open(path, "wb"), "Cannot open file " .. path)
+	f.write(response.readAll())
+	f.close()
+	response.close()
+end
+
 local function installMSS()
 	print("Thank you for choosing the")
 	print("massStorageSystem for your base's")
@@ -453,7 +466,8 @@ local function installMSS()
 	fs.makeDir(commonCodePath.."/mss/configFiles")
 	fs.makeDir(commonCodePath.."/mss/requests")
 	--Next, download the actual files.
-	print("Current end point reached!")
+	--print("Current end point reached!")
+	downloadFile("mss", "server/mssServer.lua")
 end
 
 if installMode == "cancel" then
