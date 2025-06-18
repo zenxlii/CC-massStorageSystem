@@ -113,10 +113,12 @@ local function installMSS()
 	if isACT == "yes" then
 		local continueInstall = checkIsAdvancedCraftyTurtle()
 		if not continueInstall then
+			term.clear()
 			print("Installation process cancelled.")
 			return
 		end
 	elseif isACT == "no" then
+		term.clear()
 		print("Installation process cancelled.")
 		return
 	else
@@ -125,6 +127,7 @@ local function installMSS()
 	--Ask the user to have a Wired
 	--Modem hooked up to the ACT.
 	local serverModemSide = false
+	term.clear()
 	print("Please place down a Wired Modem that is")
 	print("adjacent to this turtle, and then right")
 	print("click it to connect this turtle to the")
@@ -149,6 +152,7 @@ local function installMSS()
 		end
 		sleep(0.05)
 	end
+	term.clear()
 	local mRef = peripheral.wrap(serverModemSide)
 	local self = mRef.getNameLocal()
 	--Ask the user to hook up a Disk
@@ -162,6 +166,8 @@ local function installMSS()
 		print("empty Floppy Disk inside.")
 		print("Type in the peripheral name of this")
 		print("Disk Drive.")
+		print("This will be the common code storage")
+		print("drive.")
 		inString = getInput()
 		if mRef.isPresentRemote(inString) then
 			if mRef.getTypeRemote(inString) == "drive" then
@@ -187,6 +193,7 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	term.clear()
 	local commonCodePath = false
 	while not commonCodePath do
 		print("")
@@ -226,6 +233,7 @@ local function installMSS()
 			end
 		end
 	end
+	term.clear()
 	--Ask the user to hook up a Disk
 	--Drive (with storage) to the wired
 	--network to use as the standard
@@ -237,6 +245,8 @@ local function installMSS()
 		print("empty Floppy Disk inside.")
 		print("Type in the peripheral name of this")
 		print("Disk Drive.")
+		print("This will be the manifest file storage")
+		print("drive.")
 		inString = getInput()
 		if mRef.isPresentRemote(inString) then
 			if mRef.getTypeRemote(inString) == "drive" then
@@ -262,6 +272,7 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	term.clear()
 	local manifestPath = false
 	while not manifestPath do
 		print("")
@@ -301,6 +312,7 @@ local function installMSS()
 			end
 		end
 	end
+	term.clear()
 	--Ask the user to identify which
 	--inventory they want to use as the
 	--client import buffer.
@@ -310,6 +322,8 @@ local function installMSS()
 		print("Please connect a chest-like inventory")
 		print("to this turtle's wired network, and")
 		print("then type in the peripheral name of it.")
+		print("This will be the client item import")
+		print("buffer inventory.")
 		inString = getInput()
 		if mRef.isPresentRemote(inString) then
 			if mRef.hasTypeRemote(inString, "inventory") then
@@ -335,6 +349,7 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	term.clear()
 	--Ask the user to identify which
 	--inventory they want to use as the
 	--client export buffer.
@@ -344,6 +359,8 @@ local function installMSS()
 		print("Please connect a chest-like inventory")
 		print("to this turtle's wired network, and")
 		print("then type in the peripheral name of it.")
+		print("This will be the client item export")
+		print("buffer inventory.")
 		inString = getInput()
 		--Special case to prevent the
 		--import and export buffers
@@ -377,6 +394,7 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	term.clear()
 	--Ask the user to identify which
 	--inventory they want to use as
 	--their system's first general
@@ -387,6 +405,8 @@ local function installMSS()
 		print("Please connect a chest-like inventory")
 		print("to this turtle's wired network, and")
 		print("then type in the peripheral name of it.")
+		print("This will be the initial general item")
+		print("storage inventory.")
 		inString = getInput()
 		--Special case to prevent the
 		--import and export buffers
@@ -424,6 +444,7 @@ local function installMSS()
 			print("is not a present peripheral!")
 		end
 	end
+	term.clear()
 	--This should be all of the
 	--initial peripherals defined by
 	--now, so next we can create the
