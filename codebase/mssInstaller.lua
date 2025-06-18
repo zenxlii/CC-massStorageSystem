@@ -467,8 +467,13 @@ local function installMSS()
 	fs.makeDir(commonCodePath.."/mss/configFiles/")
 	fs.makeDir(commonCodePath.."/mss/requests/")
 	--Next, download the actual files.
-	--print("Current end point reached!")
 	downloadFile("mss/mssServer.lua", "server/mssServer.lua")
+	downloadFile("mss/recipes/recipeListLoader.lua", "server/recipeListLoader.lua")
+	downloadFile(commonCodePath.."mss/mssClient.lua", "client/mssClient.lua")
+	downloadFile(commonCodePath.."mss/configFiles/allowedShorthands.lua", "client/allowedShorthands.lua")
+	downloadFile(commonCodePath.."mss/mssUtils.lua", "common/mssUtils.lua")
+	downloadFile(commonCodePath.."mss/configFiles/condenseList.lua", "server/condenseList.lua")
+	
 end
 
 if installMode == "cancel" then
