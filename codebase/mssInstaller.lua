@@ -113,7 +113,7 @@ local function installMSS()
 	if isACT == "yes" then
 		local continueInstall = checkIsAdvancedCraftyTurtle()
 		if not continueInstall then
-			print("Installation process cancelled."
+			print("Installation process cancelled.")
 			return
 		end
 	elseif isACT == "no" then
