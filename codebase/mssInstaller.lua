@@ -117,7 +117,7 @@ end
 --Downloads a file from the Internet
 --and saves it to a specified location.
 local function downloadFile(path, url)
-	print(string.format("Installing %s to %s", repo..url, path))
+	--print(string.format("Installing %s to %s", repo..url, path))
 	local response = assert(http.get(repo..url, nil, true), "Failed to get " .. repo..url)
 	local f = assert(fs.open(path, "wb"), "Cannot open file " .. path)
 	f.write(response.readAll())
@@ -495,6 +495,7 @@ local function installMSS()
 	fs.makeDir(commonCodePath.."/mss/requests/")
 	fs.makeDir(manifestPath.."/mss/")
 	--Next, download the actual files.
+	print("Downloading files now...")
 	downloadFile("mss/mssServer.lua", "server/mssServer.lua")
 	downloadFile("mss/recipes/recipeListLoader.lua", "server/recipeListLoader.lua")
 	downloadFile("mss/storageList.lua", "defaultConfigs/defaultStorageList.lua")
@@ -503,9 +504,14 @@ local function installMSS()
 	downloadFile(commonCodePath.."/mss/mssUtils.lua", "common/mssUtils.lua")
 	downloadFile(commonCodePath.."/mss/configFiles/condenseList.lua", "defaultConfigs/defaultCondenseList.lua")
 	downloadFile(commonCodePath.."/mss/configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
+	print("File download is done!")
 	--Also need to construct a config
 	--file or two.
 	replaceLineInFile("mss/storageList.lua", 5, startingGenStorage)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 9, "local manifestDisk = "..manifestPath)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 14, "local commonCodeDisk = "..commonCodePath)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 38, "local importBuffer = "..importBuffer)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 47, "local clientExportBuffer = "..exportBuffer)
 	print("done!")
 end
 
