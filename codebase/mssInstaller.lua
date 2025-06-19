@@ -6,6 +6,32 @@ local function getInput()
 	return string.lower(io.read())
 end
 
+--Replaces whatever is at lineNumber in
+--filePath with newContents.
+--Probably not efficient for replacing
+--many lines in the same file, but it
+--would work.
+--Not tested with appending whatsoever!
+local function replaceLineInFile(filePath, lineNumber, newContents)
+	--Read in the line-by-line data of
+	--the file to be altered.
+	local file = io.open(filePath, "r")
+	local fileData = {}
+	for line in file:lines() do
+		table.insert(fileData, line)
+	end
+	io.close(file)
+	--Now add in the substituted line.
+	fileData[lineNumber] = newContents
+	--Overwrite the file with the new
+	--data.
+	local file = io.open(filePath, "w")
+	for index, value in ipairs(fileData) do
+		file:write(value.."/n")
+	end
+	io.close(file)
+end
+
 --Start by checking the directory
 --structure of this computer.
 --If it has massStorageSystem at the
@@ -466,15 +492,20 @@ local function installMSS()
 	fs.makeDir("mss/recipes/")
 	fs.makeDir(commonCodePath.."/mss/configFiles/")
 	fs.makeDir(commonCodePath.."/mss/requests/")
+	fs.makeDir(manifestPath.."/mss/")
 	--Next, download the actual files.
 	downloadFile("mss/mssServer.lua", "server/mssServer.lua")
 	downloadFile("mss/recipes/recipeListLoader.lua", "server/recipeListLoader.lua")
-	downloadFile(commonCodePath.."mss/mssClient.lua", "client/mssClient.lua")
-	downloadFile(commonCodePath.."mss/configFiles/allowedShorthands.lua", "client/allowedShorthands.lua")
-	downloadFile(commonCodePath.."mss/mssUtils.lua", "common/mssUtils.lua")
-	downloadFile(commonCodePath.."mss/configFiles/condenseList.lua", "server/condenseList.lua")
+	downloadFile("mss/storageList.lua", "defaultConfigs/defaultStorageList.lua")
+	downloadFile(commonCodePath.."/mss/mssClient.lua", "client/mssClient.lua")
+	downloadFile(commonCodePath.."/mss/configFiles/allowedShorthands.lua", "defaultConfigs/defaultAllowedShorthands.lua")
+	downloadFile(commonCodePath.."/mss/mssUtils.lua", "common/mssUtils.lua")
+	downloadFile(commonCodePath.."/mss/configFiles/condenseList.lua", "defaultConfigs/defaultCondenseList.lua")
+	downloadFile(commonCodePath.."/mss/configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
 	--Also need to construct a config
 	--file or two.
+	replaceLineInFile("mss/storageList.lua", 5, startingGenStorage)
+	print("done!")
 end
 
 if installMode == "cancel" then
@@ -484,6 +515,10 @@ elseif installMode == "install" then
 	installMSS()
 elseif installMode == "update" then
 	error("Updating hasn't been implemented yet!")
+elseif installMode == "remove" then
+	error("Uninstallation hasn't been implemented yet!")
+elseif installMode == "makeClient" then
+	error("Easy client setup hasn't been implemented yet!")
 else
 	error("An invalid installMode of "..installMode.." was passed through somehow!")
 end

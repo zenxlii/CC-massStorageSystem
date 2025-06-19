@@ -5,7 +5,7 @@ local mssU = require("mssUtils")
 
 local batchSize = config.batchSize
 
-local transferDrive = config.transferDrive
+local manifestPath = config.manifestPath
 
 local manifestFile = config.manifestFile
 local requestsDir = config.requestsDir

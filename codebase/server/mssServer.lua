@@ -13,7 +13,7 @@ local genInvs = config.genInvs
 
 local allInvs = genInvs
 
-local transferDrive = config.transferDrive
+local manifestPath = config.manifestPath
 
 local manifestFile = config.manifestFile
 
