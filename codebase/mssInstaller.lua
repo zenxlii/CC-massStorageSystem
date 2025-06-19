@@ -27,7 +27,7 @@ local function replaceLineInFile(filePath, lineNumber, newContents)
 	--data.
 	local file = io.open(filePath, "w")
 	for index, value in ipairs(fileData) do
-		file:write(value.."/n")
+		file:write(value.."\n")
 	end
 	io.close(file)
 end
@@ -126,6 +126,7 @@ local function downloadFile(path, url)
 end
 
 local function installMSS()
+	term.clear()
 	print("Thank you for choosing the")
 	print("massStorageSystem for your base's")
 	print("logistics and storage management needs!")
