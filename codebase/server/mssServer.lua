@@ -2,18 +2,17 @@
 local config = require("config")
 local rll = require("recipeListLoader")
 local mssU = require("mssUtils")
-local serverConfig = require("mssServerConfig")
+local condList = require("condenseList")
+local storeList = require("storageList")
 
 --Constants
 local batchSize = config.batchSize
 
 local self = peripheral.find("modem").getNameLocal()
 
-local genInvs = config.genInvs
+local genInvs = storeList.genInvs
 
 local allInvs = genInvs
-
-local manifestPath = config.manifestPath
 
 local manifestFile = config.manifestFile
 
@@ -30,7 +29,7 @@ rednet.open(modemSide)
 
 local recipeList = rll.recipeList
 
-local condenseTable = serverConfig.condenseTable
+local condenseTable = condList.condenseTable
 
 --Manifest Stuff
 
@@ -1438,19 +1437,22 @@ end
 
 --Default Tasks
 
+--Can get away with this task being
+--hard-coded in, as the system should
+--always have an importBuffer present.
 local clientDumpImportTask = {}
 clientDumpImportTask["taskType"] = "import"
 clientDumpImportTask["target"] = importBuffer
 clientDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, clientDumpImportTask)
 
-
+--[[
 local procSysDumpImportTask = {}
 procSysDumpImportTask["taskType"] = "import"
 procSysDumpImportTask["target"] = "expandedstorage:chest_5"
 procSysDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, procSysDumpImportTask)
-
+]]
 
 --Main Server Loop
 

@@ -510,8 +510,8 @@ local function installMSS()
 	replaceLineInFile("mss/storageList.lua", 5, startingGenStorage)
 	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 9, "local manifestDisk = "..manifestPath)
 	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 14, "local commonCodeDisk = "..commonCodePath)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 38, "local importBuffer = "..importBuffer)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 47, "local clientExportBuffer = "..exportBuffer)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 22, "local importBuffer = "..importBuffer)
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 31, "local clientExportBuffer = "..exportBuffer)
 	print("done!")
 end
 

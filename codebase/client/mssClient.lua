@@ -2,10 +2,11 @@
 local strLib = require("cc.strings")
 local config = require("config")
 local mssU = require("mssUtils")
+local sh = require("allowedShorthands")
 
 local batchSize = config.batchSize
 
-local manifestPath = config.manifestPath
+local commonCodePath = config.commonCodePath
 
 local manifestFile = config.manifestFile
 local requestsDir = config.requestsDir
@@ -220,10 +221,6 @@ local function sortDisplayNames()
 	--manifest's size.
 	entryCount = #sortedNames
 	highestPage = math.ceil(entryCount / pageSize)
-	--[[
-	currPage = math.min(1, highestPage)
-	currSelIndex = false
-	]]
 end
 
 local function applySearchFilter()

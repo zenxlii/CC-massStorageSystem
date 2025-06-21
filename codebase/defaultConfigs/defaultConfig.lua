@@ -13,22 +13,6 @@ local manifestDisk = "FILLED BY mssInstaller.lua"
 --available to all computers in MSS.
 local commonCodeDisk = "FILLED BY mssInstaller.lua"
 
---The file locations for stuff on the
---common code disk.
-local manifestFile = manifestDisk.."/mss/manifestFile"
-local busWorkFile = commonCodeDisk.."/mss/configFiles/busWork"
-
---The directory used to hold requests
---from clients before the server has
---a chance to interpret them.
-local requestsDir = commonCodeDisk.."/mss/requestsDir/"
-
---The directory used to hold recipes
---that the system knows how to craft.
---Stored on the server turtle by
---default (for now).
-local recipesDir = "mss/recipes/"
-
 --The name of an inventory that is
 --designated for items coming into the
 --system, so that they can be routed
@@ -45,6 +29,23 @@ local importBuffer = "FILLED BY mssInstaller.lua"
 --updating the manifest as if the items
 --were sent successfully.
 local clientExportBuffer = "FILLED BY mssInstaller.lua"
+
+--The file locations for stuff on the
+--common code disk.
+local manifestFile = manifestDisk.."/mss/manifestFile"
+local busWorkFile = commonCodeDisk.."/mss/configFiles/busWork"
+
+--The directory used to hold requests
+--from clients before the server has
+--a chance to interpret them.
+local requestsDir = commonCodeDisk.."/mss/requestsDir/"
+
+--The directory used to hold recipes
+--that the system knows how to craft.
+--Stored on the server turtle by
+--default (for now).
+local recipesDir = "mss/recipes/"
+
 
 --Stores the side of the first modem
 --the computer finds for ease of
@@ -71,7 +72,6 @@ batchSize = batchSize,
 manifestFile = manifestFile,
 importBuffer = importBuffer,
 busWorkFile = busWorkFile,
-self = self,
 clientExportBuffer = clientExportBuffer,
 requestsDir = requestsDir,
 modemSide = modemSide,
