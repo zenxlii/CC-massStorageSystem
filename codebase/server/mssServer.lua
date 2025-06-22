@@ -1,5 +1,6 @@
 local configTest = require("../disk2/mss/configFiles/config")
 --Imports
+print(configTest.manifestDisk)
 error("configTest worked!")
 local config = require("config")
 local rll = require("recipeListLoader")
