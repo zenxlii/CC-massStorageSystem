@@ -1,5 +1,6 @@
 local configTest = require("../config")
 --Imports
+error("configTest worked!")
 local config = require("config")
 local rll = require("recipeListLoader")
 local mssU = require("mssUtils")
