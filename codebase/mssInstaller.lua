@@ -35,7 +35,7 @@ end
 --Takes in a string and wraps it in
 --"'s.
 local function stringWrap(inString)
-	return '"'..inString..'"'
+	return "'"..inString.."'"
 end
 
 --Start by checking the directory
