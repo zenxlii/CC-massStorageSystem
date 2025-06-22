@@ -1,8 +1,8 @@
 --Imports
 local strLib = require("cc.strings")
-local config = require("configFiles/config")
+local config = require("config")
 local mssU = require("mssUtils")
-local sh = require("configFiles/allowedShorthands")
+local sh = require("allowedShorthands")
 
 local batchSize = config.batchSize
 

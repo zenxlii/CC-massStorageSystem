@@ -1,7 +1,7 @@
 --Imports
-local commonCodeDisk = require("../commonCodeDisk")
+local commonCodeDisk = require("commonCodeDisk")
 local ccd = commonCodeDisk.commonCodeDisk
-local config = require("../../"..ccd.."mss/configFiles/config")
+local config = require("config")
 
 local dir = config.recipesDir
 

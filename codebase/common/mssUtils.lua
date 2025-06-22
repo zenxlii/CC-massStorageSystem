@@ -1,4 +1,4 @@
-local config = require("configFiles/config")
+local config = require("config")
 
 local batchSize = config.batchSize
 
