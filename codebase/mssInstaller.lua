@@ -515,12 +515,18 @@ local function installMSS()
 	print("File download is done!")
 	--Also need to construct a config
 	--file or two.
-	replaceLineInFile("mss/storageList.lua", 5, stringWrap(startingGenStorage))
+	replaceLineInFile("mss/configFiles/storageList.lua", 5, stringWrap(startingGenStorage))
+	print("Altered storageList.lua!")
 	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 12, "local manifestDisk = "..stringWrap(manifestPath))
+	print("Altered manifestDisk!")
 	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 20, "local importBuffer = "..stringWrap(importBuffer))
+	print("Altered importBuffer!")
 	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 29, "local clientExportBuffer = "..stringWrap(exportBuffer))
+	print("Altered clientExportBuffer!")
 	replaceLineInFile(commonCodePath.."/mss/commonCodeDisk.lua", 4, "local commonCodeDisk = "..stringWrap(commonCodePath))
+	print("Altered the remote commonCodeDisk!")
 	replaceLineInFile("mss/commonCodeDisk.lua", 4, "local commonCodeDisk = "..stringWrap(commonCodePath))
+	print("Altered the local commonCodeDisk!")
 	print("done!")
 end
 
