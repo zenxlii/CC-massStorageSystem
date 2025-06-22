@@ -501,7 +501,7 @@ local function installMSS()
 	fs.makeDir(commonCodePath.."/requests/")
 	--Next, download the actual files.
 	print("Downloading files now...")
-	downloadFile("configFiles/config.lua", "common/defaultConfig.lua")
+	downloadFile("configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
 	downloadFile("mssServer.lua", "server/mssServer.lua")
 	downloadFile("recipeListLoader.lua", "server/recipeListLoader.lua")
 	downloadFile("configFiles/storageList.lua", "defaultConfigs/defaultStorageList.lua")
