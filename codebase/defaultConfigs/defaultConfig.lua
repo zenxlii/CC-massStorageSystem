@@ -75,5 +75,6 @@ busWorkFile = busWorkFile,
 clientExportBuffer = clientExportBuffer,
 requestsDir = requestsDir,
 modemSide = modemSide,
-recipesDir = recipesDir
+recipesDir = recipesDir,
+commonCodeDisk = commonCodeDisk
 }
