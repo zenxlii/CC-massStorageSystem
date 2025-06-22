@@ -1,13 +1,4 @@
 --Imports
-local commonCodeDisk = require("commonCodeDisk")
-local ccd = commonCodeDisk.commonCodeDisk
---[[
-local config = require("../"..ccd.."/mss/configFiles/config")
-local rll = require("recipeListLoader")
-local mssU = require("../"..ccd.."/mss/mssUtils")
-local condList = require("../"..ccd.."/mss/configFiles/condenseList")
-local storeList = require("configFiles/storageList")
-]]
 local config = require("config")
 print("config loaded!")
 local rll = require("recipeListLoader")

@@ -1,6 +1,4 @@
 --Imports
-local commonCodeDisk = require("commonCodeDisk")
-local ccd = commonCodeDisk.commonCodeDisk
 local config = require("config")
 
 local dir = config.recipesDir
