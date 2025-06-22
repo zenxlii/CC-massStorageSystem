@@ -1,3 +1,4 @@
+local configTest = require("../config")
 --Imports
 local config = require("config")
 local rll = require("recipeListLoader")
