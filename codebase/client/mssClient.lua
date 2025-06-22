@@ -964,7 +964,7 @@ local function mainLoop()
 		local charPressed = eventData[2]
 		searchBarText = searchBarText..charPressed
 		writeSearchBarText()
-	elseif event == "timer"
+	elseif event == "timer" then
 		
     end
 end
