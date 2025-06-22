@@ -1,3 +1,6 @@
+local commonCodeDisk = require("../commonCodeDisk")
+local ccd = commonCodeDisk.commonCodeDisk
+
 --How large the batches should be when
 --calling functions like
 --batchedParallel().
@@ -7,11 +10,6 @@ local batchSize = 250
 --The name of the disk used to hold the
 --manifest file.
 local manifestDisk = "FILLED BY mssInstaller.lua"
-
---The name of the disk used to hold
---code and data that should be
---available to all computers in MSS.
-local commonCodeDisk = "FILLED BY mssInstaller.lua"
 
 --The name of an inventory that is
 --designated for items coming into the
@@ -33,12 +31,12 @@ local clientExportBuffer = "FILLED BY mssInstaller.lua"
 --The file locations for stuff on the
 --common code disk.
 local manifestFile = manifestDisk.."/mss/manifestFile"
-local busWorkFile = commonCodeDisk.."/mss/configFiles/busWork"
+local busWorkFile = ccd.."/mss/configFiles/busWork"
 
 --The directory used to hold requests
 --from clients before the server has
 --a chance to interpret them.
-local requestsDir = commonCodeDisk.."/mss/requestsDir/"
+local requestsDir = ccd.."/mss/requests/"
 
 --The directory used to hold recipes
 --that the system knows how to craft.

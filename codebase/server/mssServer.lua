@@ -1,13 +1,11 @@
-local configTest = require("../disk2/mss/configFiles/config")
 --Imports
-print(configTest.importBuffer)
-print(configTest.recipesDir)
-error("configTest worked!")
-local config = require("config")
+local commonCodeDisk = require("commonCodeDisk")
+local ccd = commonCodeDisk.commonCodeDisk
+local config = require("../"..ccd.."/mss/configFiles/config")
 local rll = require("recipeListLoader")
-local mssU = require("mssUtils")
-local condList = require("condenseList")
-local storeList = require("storageList")
+local mssU = require("../"..ccd.."/mss/mssUtils")
+local condList = require("../"..ccd.."/mss/configFiles/condenseList")
+local storeList = require("configFiles/storageList")
 
 --Constants
 local batchSize = config.batchSize
