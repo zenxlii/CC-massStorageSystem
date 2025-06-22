@@ -1,5 +1,5 @@
 --Imports
-local config = require("config")
+local config = require("configFiles/config")
 print("config loaded!")
 local rll = require("recipeListLoader")
 print("recipeListLoader loaded!")
