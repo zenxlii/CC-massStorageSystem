@@ -1,4 +1,4 @@
-local configTest = require("../config")
+local configTest = require("../disk2/mss/configFiles/config")
 --Imports
 error("configTest worked!")
 local config = require("config")
