@@ -32,6 +32,12 @@ local function replaceLineInFile(filePath, lineNumber, newContents)
 	io.close(file)
 end
 
+--Takes in a string and wraps it in
+--"'s.
+local function stringWrap(inString)
+	return '"'..inString..'"'
+end
+
 --Start by checking the directory
 --structure of this computer.
 --If it has massStorageSystem at the
@@ -507,11 +513,11 @@ local function installMSS()
 	print("File download is done!")
 	--Also need to construct a config
 	--file or two.
-	replaceLineInFile("mss/storageList.lua", 5, startingGenStorage)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 9, "local manifestDisk = "..manifestPath)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 14, "local commonCodeDisk = "..commonCodePath)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 22, "local importBuffer = "..importBuffer)
-	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 31, "local clientExportBuffer = "..exportBuffer)
+	replaceLineInFile("mss/storageList.lua", 5, stringWrap(startingGenStorage))
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 9, "local manifestDisk = "..stringWrap(manifestPath))
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 14, "local commonCodeDisk = "..stringWrap(commonCodePath))
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 22, "local importBuffer = "..stringWrap(importBuffer))
+	replaceLineInFile(commonCodePath.."/mss/configFiles/config.lua", 31, "local clientExportBuffer = "..stringWrap(exportBuffer))
 	print("done!")
 end
 
