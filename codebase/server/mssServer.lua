@@ -1,11 +1,24 @@
 --Imports
 local commonCodeDisk = require("commonCodeDisk")
 local ccd = commonCodeDisk.commonCodeDisk
+--[[
 local config = require("../"..ccd.."/mss/configFiles/config")
 local rll = require("recipeListLoader")
 local mssU = require("../"..ccd.."/mss/mssUtils")
 local condList = require("../"..ccd.."/mss/configFiles/condenseList")
 local storeList = require("configFiles/storageList")
+]]
+local config = require("../config")
+print("config loaded!")
+error("breakpoint!")
+local rll = require("recipeListLoader")
+print("recipeListLoader loaded!")
+local mssU = require("../mssUtils")
+print("mssUtils loaded!")
+local condList = require("../condenseList")
+print("condenseList loaded!")
+local storeList = require("storageList")
+print("storageList loaded!")
 
 --Constants
 local batchSize = config.batchSize
