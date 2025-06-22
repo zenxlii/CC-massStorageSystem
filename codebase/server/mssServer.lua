@@ -1,6 +1,6 @@
 local configTest = require("../disk2/mss/configFiles/config")
 --Imports
-print(configTest.manifestDisk)
+print(configTest.importBuffer)
 print(configTest.recipesDir)
 error("configTest worked!")
 local config = require("config")
