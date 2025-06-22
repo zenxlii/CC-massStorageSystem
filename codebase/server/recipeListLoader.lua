@@ -1,7 +1,4 @@
---Imports
-local config = require("config")
-
-local dir = config.recipesDir
+local dir = "recipes/"
 
 local recipeList = {}
 

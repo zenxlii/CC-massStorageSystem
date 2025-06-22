@@ -1,13 +1,13 @@
 --Imports
-local config = require("configFiles/config")
+local config = require("configFiles.config")
 print("config loaded!")
 local rll = require("recipeListLoader")
 print("recipeListLoader loaded!")
-local mssU = require("mssUtils")
+local mssU = require(config.commonCodeDisk..".mssUtils")
 print("mssUtils loaded!")
-local condList = require("condenseList")
+local condList = require(config.commonCodeDisk..".condenseList")
 print("condenseList loaded!")
-local storeList = require("storageList")
+local storeList = require("configFiles.storageList")
 print("storageList loaded!")
 
 --Constants
