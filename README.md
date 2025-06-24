@@ -33,7 +33,7 @@ ComputerCraft: Tweaked version 1.94 or higher (untested on CC:T, but this is the
 # (Rough and Temporary) Installation Guide
 1. Ensure that you have everything mentioned in [Setup Requirements](#setup-requirements) available to you.
 2. Place down the (Advanced) Crafty Turtle where you would want the server turtle to be in your storage system.
-3. Type the following line into said turtle: `wget `[`this link`](https://raw.githubusercontent.com/zenxlii/CC-massStorageSystem/refs/heads/main/codebase/mssInstaller.lua).
+3. Type the following line into said turtle: `wget`[`this link`](https://raw.githubusercontent.com/zenxlii/CC-massStorageSystem/refs/heads/main/codebase/mssInstaller.lua).
 4. Run the `mssInstaller.lua` file that you just downloaded.
 5. Follow the installer's instructions.
 6. Wait for the server turtle to reboot.
