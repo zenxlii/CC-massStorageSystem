@@ -1,4 +1,4 @@
-local config = require("config")
+local config = require("configFiles.config")
 local commonCodeDisk = config.commonCodeDisk
 local inString = ""
 
