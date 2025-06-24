@@ -523,7 +523,15 @@ local function installMSS()
 	replaceLineInFile("configFiles/config.lua", 17, "local commonCodeDisk = "..stringWrap(commonCodePath))
 	replaceLineInFile("configFiles/config.lua", 25, "local importBuffer = "..stringWrap(importBuffer))
 	replaceLineInFile("configFiles/config.lua", 34, "local clientExportBuffer = "..stringWrap(exportBuffer))
-	print("done!")
+	print("Line replacement is done!")
+	--Make a startup.lua file for the
+	--server turtle.
+	local newFile = io.open("startup.lua", "w")
+	newFile:write("shell.run(\"mssServer.lua\")")
+	io.close(newFile)
+	print("Restarting...")
+	sleep(5)
+	os.reboot()
 end
 
 --Basically a cut-down version of
