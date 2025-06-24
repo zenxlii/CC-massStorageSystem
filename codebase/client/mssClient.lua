@@ -441,7 +441,7 @@ local function drawFocusCardItem()
 	--This depends on how many of the
 	--selected item are in storage,
 	--compared to the draw amount.
-	local boxColour = colours.red
+	local boxColour = colours.brown
 	local currSelAmount = "No Selection"
 	if currSelIndex then
 		currSelAmount = displayManifest[filteredSortedNames[currSelIndex][2]]["amount"]
@@ -461,7 +461,7 @@ local function drawFocusCardItem()
 	--Writes the name text.
 	pos(27,2)
 	write("Name:")
-	drawFocusNameText(true)
+	--drawFocusNameText(true)
 	--Informs the user that this item
 	--is craftable by the system.
 	if currSelIndex then
