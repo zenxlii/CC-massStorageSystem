@@ -467,10 +467,12 @@ local function drawFocusCardItem()
 	--drawFocusNameText(true)
 	--Informs the user that this item
 	--is craftable by the system.
-	if currSelIndex then
-		if displayManifest[filteredSortedNames[currSelIndex][2]]["hasRecipe"] then
-			pos(26,8)
-			write("Craftable!")
+	if filteredEntryCount ~= 0 then
+		if currSelIndex then
+			if displayManifest[filteredSortedNames[currSelIndex][2]]["hasRecipe"] then
+				pos(26,8)
+				write("Craftable!")
+			end
 		end
 	end
 end
