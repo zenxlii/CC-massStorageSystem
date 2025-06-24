@@ -1,14 +1,10 @@
 --Imports
 local config = require("configFiles.config")
-print("config loaded!")
 local rll = require("recipeListLoader")
-print("recipeListLoader loaded!")
 local mssU = require(config.commonCodeDisk..".mssUtils")
-print("mssUtils loaded!")
 local condList = require(config.commonCodeDisk..".configFiles.condenseList")
-print("condenseList loaded!")
 local storeList = require("configFiles.storageList")
-print("storageList loaded!")
+local bussin = require("configFiles.bussin")
 
 --Constants
 local batchSize = config.batchSize
@@ -1442,14 +1438,20 @@ end
 
 --Default Tasks
 
+for _, taskDef in ipairs(bussin.taskTable) do
+	table.insert(masterTaskList, taskDef)
+end
+
 --Can get away with this task being
 --hard-coded in, as the system should
 --always have an importBuffer present.
+--[[
 local clientDumpImportTask = {}
 clientDumpImportTask["taskType"] = "import"
 clientDumpImportTask["target"] = importBuffer
 clientDumpImportTask["specificSlots"] = false
 table.insert(masterTaskList, clientDumpImportTask)
+]]
 
 --[[
 local procSysDumpImportTask = {}
