@@ -44,7 +44,7 @@ end
 --root of its local storage, then we
 --have a prior install.
 local installMode = false
-if fs.exists("massStorageSystem") then
+if fs.exists("mssServer.lua") then
 	while installMode == false do
 		print("It seems that you have installed")
 		print("massStorageSystem previously.")
