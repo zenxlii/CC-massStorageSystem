@@ -441,14 +441,16 @@ local function drawFocusCardItem()
 	--This depends on how many of the
 	--selected item are in storage,
 	--compared to the draw amount.
-	local boxColour = colours.brown
+	local boxColour = colours.red
 	local currSelAmount = "No Selection"
-	if currSelIndex then
-		currSelAmount = displayManifest[filteredSortedNames[currSelIndex][2]]["amount"]
-		if drawAmount <= currSelAmount then
-			boxColour = colours.green
+	if filteredEntryCount ~= 0 then
+		if currSelIndex then
+			currSelAmount = displayManifest[filteredSortedNames[currSelIndex][2]]["amount"]
+			if drawAmount <= currSelAmount then
+				boxColour = colours.green
+			end
+			
 		end
-		
 	end
 	box(26,2,26,8,colours.lightGrey)
 	box(27,2,39,8,boxColour)
