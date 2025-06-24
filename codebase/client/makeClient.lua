@@ -1,3 +1,5 @@
+local config = require("config")
+local commonCodeDisk = config.commonCodeDisk
 local inString = ""
 
 --A function that takes user input then
@@ -23,9 +25,12 @@ while not shouldWrite do
 end
 
 if shouldWrite == "yes" then
-	local newFile = io.open("test.lua", "w")
-	
+	local newFile = io.open("startup.lua", "w")
+	newFile:write("shell.run(\""..commonCodeDisk.."/mssClient.lua\")")
 	io.close(newFile)
+	print("Restarting...")
+	sleep(5)
+	os.reboot()
 elseif shouldWrite == "no" then
 	print("Cancelling...")
 	return
