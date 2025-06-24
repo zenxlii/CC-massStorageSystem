@@ -56,7 +56,7 @@ if fs.exists("massStorageSystem") then
 		if inString == "f" then
 			
 		elseif inString == "u" then
-			
+			installMode = "update"
 		elseif inString == "c" then
 			installMode = "cancel"
 		else
@@ -525,13 +525,61 @@ local function installMSS()
 	print("done!")
 end
 
+--Basically a cut-down version of
+--installMSS(), as this only installs
+--the non-config files.
+local function updateMSS()
+	term.clear()
+	local confirmCheck = false
+	while not confirmCheck do
+		print("Would you like to update your")
+		print("installation of massStorageSystem?")
+		print("This will delete and re-download the")
+		print("main code files (but not config files).")
+		print("[Y]es or [N]o.")
+		inString = getInput()
+		if inString == "y" then
+			confirmCheck = "yes"
+		elseif inString == "n" then
+			confirmCheck = "no"
+		else
+			print("Not a valid value!")
+		end
+	end
+	if confirmCheck == "no" then
+		print("Cancelling...")
+		return
+	elseif confirmCheck ~= "yes" then
+		error("An invalid confirmCheck of "..confirmCheck.." was passed through!")
+	end
+	--With confirmation now known, we
+	--can delete the old code files.
+	--But first, we need to find which
+	--disk is which.
+	local config = require("config")
+	local commonCodePath = config.commonCodeDisk
+	--Now actually delete the files.
+	fs.delete("mssServer.lua")
+	fs.delete("recipeListLoader.lua")
+	fs.delete(commonCodePath.."/mssClient.lua")
+	fs.delete(commonCodePath.."/mssUtils.lua")
+	--Download fresh files now.
+	downloadFile("mssServer.lua", "server/mssServer.lua")
+	downloadFile("recipeListLoader.lua", "server/recipeListLoader.lua")
+	downloadFile(commonCodePath.."/mssClient.lua", "client/mssClient.lua")
+	downloadFile(commonCodePath.."/mssUtils.lua", "common/mssUtils.lua")
+	print("Update complete!")
+	print("Please restart the client turtles.")
+end
+
 if installMode == "cancel" then
 	print("Cancelling...")
 	return
 elseif installMode == "install" then
 	installMSS()
 elseif installMode == "update" then
-	error("Updating hasn't been implemented yet!")
+	updateMSS()
+	--error("Updating hasn't been implemented yet!")
 elseif installMode == "remove" then
 	error("Uninstallation hasn't been implemented yet!")
 elseif installMode == "makeClient" then

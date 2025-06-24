@@ -23,6 +23,7 @@ local modemSide = config.modemSide
 --rednet messages.
 rednet.open(modemSide)
 rednet.host("mssClient", self)
+--rednet.host("mssRebootSignal", self)
 
 --TODO:
 --Prettify the numbers for display
