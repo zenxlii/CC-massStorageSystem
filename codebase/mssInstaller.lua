@@ -516,14 +516,14 @@ local function installMSS()
 	--Also need to construct a config
 	--file or two.
 	replaceLineInFile("configFiles/storageList.lua", 5, stringWrap(startingGenStorage))
-	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 12, "local manifestDisk = "..stringWrap(manifestPath))
-	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 17, "local commonCodeDisk = "..stringWrap(commonCodePath))
-	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 25, "local importBuffer = "..stringWrap(importBuffer))
-	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 34, "local clientExportBuffer = "..stringWrap(exportBuffer))
-	replaceLineInFile("configFiles/config.lua", 12, "local manifestDisk = "..stringWrap(manifestPath))
-	replaceLineInFile("configFiles/config.lua", 17, "local commonCodeDisk = "..stringWrap(commonCodePath))
-	replaceLineInFile("configFiles/config.lua", 25, "local importBuffer = "..stringWrap(importBuffer))
-	replaceLineInFile("configFiles/config.lua", 34, "local clientExportBuffer = "..stringWrap(exportBuffer))
+	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 9, "local manifestDisk = "..stringWrap(manifestPath))
+	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 14, "local commonCodeDisk = "..stringWrap(commonCodePath))
+	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 22, "local importBuffer = "..stringWrap(importBuffer))
+	replaceLineInFile(commonCodePath.."/configFiles/config.lua", 31, "local clientExportBuffer = "..stringWrap(exportBuffer))
+	replaceLineInFile("configFiles/config.lua", 9, "local manifestDisk = "..stringWrap(manifestPath))
+	replaceLineInFile("configFiles/config.lua", 14, "local commonCodeDisk = "..stringWrap(commonCodePath))
+	replaceLineInFile("configFiles/config.lua", 22, "local importBuffer = "..stringWrap(importBuffer))
+	replaceLineInFile("configFiles/config.lua", 31, "local clientExportBuffer = "..stringWrap(exportBuffer))
 	print("Line replacement is done!")
 	--Make a startup.lua file for the
 	--server turtle.
