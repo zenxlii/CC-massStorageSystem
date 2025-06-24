@@ -510,6 +510,7 @@ local function installMSS()
 	downloadFile(commonCodePath.."/mssUtils.lua", "common/mssUtils.lua")
 	downloadFile(commonCodePath.."/configFiles/condenseList.lua", "defaultConfigs/defaultCondenseList.lua")
 	downloadFile(commonCodePath.."/configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
+	downloadFile(commonCodePath.."/makeClient.lua", "client/makeClient.lua")
 	print("File download is done!")
 	--Also need to construct a config
 	--file or two.
