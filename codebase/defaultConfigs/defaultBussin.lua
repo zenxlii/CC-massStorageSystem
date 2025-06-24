@@ -1,4 +1,4 @@
-local config = require("config")
+local config = require("configFiles.config")
 local importBuffer = config.importBuffer
 local taskTable = {}
 
