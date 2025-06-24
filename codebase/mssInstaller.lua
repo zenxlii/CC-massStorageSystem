@@ -557,7 +557,7 @@ local function updateMSS()
 	--can delete the old code files.
 	--But first, we need to find which
 	--disk is which.
-	local config = require("config")
+	local config = require("configFiles.config")
 	local commonCodePath = config.commonCodeDisk
 	--Now actually delete the files.
 	fs.delete("mssServer.lua")
