@@ -1021,6 +1021,30 @@ local function craftTask(taskTable)
 		end
 		dumpInventory()
 		amountLeft = amountLeft - recipe[1]
+	else
+		--First we check to see if
+		--there's enough space in the
+		--target inventories to make a
+		--craft happen at all.
+		for target, _ in pairs(recipe[3]) do
+			local targetState = scanReturns[target]
+			local hasSpace = false
+			for slotNum, state in pairs(targetState) do
+				if state == false then
+					hasSpace = true
+					break
+				end
+			end
+			if hasSpace == false then
+				return amountLeft
+			end
+		end
+		--If we get here, we know we
+		--have space.
+		for inv, iData in pairs(recipe[3]) do
+			dumbPushSpreader(inv, iData[1], iData[2])
+		end
+		amountLeft = amountLeft - recipe[1]
 	end
 	return amountLeft
 end
@@ -1184,9 +1208,14 @@ local function interpretTaskEarly(taskTable, taskIndex)
 		local target = taskTable["target"]
 		addScanErrand(target)
 	elseif taskType == "craft" then
-		--TODO:
-		--Make scanning for craft tasks
-		--dependent on the craft type.
+		--Scans the target inventories
+		--if this is not a crafting
+		--table recipe.
+		if recipeList[taskTable["eName"]][4] ~= "craftingTable" then
+			for _, target in pairs(mssU.getTableKeys(recipeList[taskTable["eName"]][3]))
+				addScanErrand(target)
+			end
+		end
 	end
 end
 
