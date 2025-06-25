@@ -588,8 +588,6 @@ local function updateMSS()
 	--In-Development Stuff:
 	downloadFile("recipeCoreDefs.lua", "server/recipeCoreDefs.lua")
 	downloadFile("recipeListAssembler.lua", "server/recipeListAssembler.lua")
-	--Temporary line
-	downloadFile("recipes/craftingTable.lua", "server/craftingTable.lua")
 	print("Update complete!")
 	print("Please restart the client turtles.")
 end
