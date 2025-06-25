@@ -1292,6 +1292,13 @@ end
 
 --
 local function checkCraftViabilityStep(eName, amount, craftManifest)
+	--Fail if a requested item has
+	--never been seen by the system
+	--before, as we know that we do not
+	--have it.
+	if not craftManifest[eName] then
+		return false
+	end
 	craftManifest[eName]["wantedTotal"] = craftManifest[eName]["wantedTotal"] + amount
 	distributeWantedTotal(eName, craftManifest)
 	if craftManifest[eName]["amountToMake"] > 0 then
