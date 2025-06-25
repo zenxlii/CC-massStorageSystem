@@ -17,7 +17,7 @@ if recipeFiles ~= {} then
 	--and disconnect them from their
 	--source library.
 	for index, fileName in ipairs(recipeFiles) do
-		local l = require(dir.."."..fileName)
+		local l = require(dir.."."..string.sub(fileName,1,-5))
 		local recipeList = textutils.unserialise(textutils.serialise(l.recipeList))
 		--Tricky little memory saving?
 		l = nil
