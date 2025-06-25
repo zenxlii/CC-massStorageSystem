@@ -470,7 +470,7 @@ local function drawFocusCardItem()
 	if filteredEntryCount ~= 0 then
 		if currSelIndex then
 			if displayManifest[filteredSortedNames[currSelIndex][2]]["hasRecipe"] then
-				pos(26,8)
+				pos(27,8)
 				write("Craftable!")
 			end
 		end
