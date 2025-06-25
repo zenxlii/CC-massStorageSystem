@@ -512,6 +512,10 @@ local function installMSS()
 	downloadFile(commonCodePath.."/configFiles/condenseList.lua", "defaultConfigs/defaultCondenseList.lua")
 	downloadFile(commonCodePath.."/configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
 	downloadFile(commonCodePath.."/makeClient.lua", "client/makeClient.lua")
+	--In-Development Stuff:
+	downloadFile("recipeCoreDefs.lua", "server/recipeCoreDefs.lua")
+	downloadFile("recipeListAssembler.lua", "server/recipeListAssembler.lua")
+	downloadFile("recipes/craftingTable.lua", "server/craftingTable.lua")
 	print("File download is done!")
 	--Also need to construct a config
 	--file or two.

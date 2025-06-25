@@ -1438,28 +1438,11 @@ end
 
 --Default Tasks
 
+--Loads in every task defined in the
+--file bussin.lua.
 for _, taskDef in ipairs(bussin.taskTable) do
 	table.insert(masterTaskList, taskDef)
 end
-
---Can get away with this task being
---hard-coded in, as the system should
---always have an importBuffer present.
---[[
-local clientDumpImportTask = {}
-clientDumpImportTask["taskType"] = "import"
-clientDumpImportTask["target"] = importBuffer
-clientDumpImportTask["specificSlots"] = false
-table.insert(masterTaskList, clientDumpImportTask)
-]]
-
---[[
-local procSysDumpImportTask = {}
-procSysDumpImportTask["taskType"] = "import"
-procSysDumpImportTask["target"] = "expandedstorage:chest_5"
-procSysDumpImportTask["specificSlots"] = false
-table.insert(masterTaskList, procSysDumpImportTask)
-]]
 
 --Main Server Loop
 
