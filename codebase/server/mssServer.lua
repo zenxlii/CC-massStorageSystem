@@ -1,10 +1,12 @@
 --Imports
 local config = require("configFiles.config")
-local rll = require("recipeListLoader")
+--local rll = require("recipeListLoader")
 local mssU = require(config.commonCodeDisk..".mssUtils")
 local condList = require(config.commonCodeDisk..".configFiles.condenseList")
 local storeList = require("configFiles.storageList")
 local bussin = require("configFiles.bussin")
+
+local rla = require("recipeListAssembler")
 
 --Constants
 local batchSize = config.batchSize
@@ -28,7 +30,8 @@ local modemSide = config.modemSide
 
 rednet.open(modemSide)
 
-local recipeList = rll.recipeList
+--local recipeList = rll.recipeList
+local recipeList = rla.masterRecipeList
 
 local condenseTable = condList.condenseTable
 

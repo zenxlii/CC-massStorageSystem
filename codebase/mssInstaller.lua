@@ -577,11 +577,19 @@ local function updateMSS()
 	fs.delete("recipeListLoader.lua")
 	fs.delete(commonCodePath.."/mssClient.lua")
 	fs.delete(commonCodePath.."/mssUtils.lua")
+	--In-Development Stuff:
+	fs.delete("recipeCoreDefs.lua")
+	fs.delete("recipeListAssembler.lua")
 	--Download fresh files now.
 	downloadFile("mssServer.lua", "server/mssServer.lua")
 	downloadFile("recipeListLoader.lua", "server/recipeListLoader.lua")
 	downloadFile(commonCodePath.."/mssClient.lua", "client/mssClient.lua")
 	downloadFile(commonCodePath.."/mssUtils.lua", "common/mssUtils.lua")
+	--In-Development Stuff:
+	downloadFile("recipeCoreDefs.lua", "server/recipeCoreDefs.lua")
+	downloadFile("recipeListAssembler.lua", "server/recipeListAssembler.lua")
+	--Temporary line
+	downloadFile("recipes/craftingTable.lua", "server/craftingTable.lua")
 	print("Update complete!")
 	print("Please restart the client turtles.")
 end
