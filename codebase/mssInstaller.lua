@@ -512,10 +512,10 @@ local function installMSS()
 	downloadFile(commonCodePath.."/configFiles/condenseList.lua", "defaultConfigs/defaultCondenseList.lua")
 	downloadFile(commonCodePath.."/configFiles/config.lua", "defaultConfigs/defaultConfig.lua")
 	downloadFile(commonCodePath.."/makeClient.lua", "client/makeClient.lua")
-	--In-Development Stuff:
 	downloadFile("recipeCoreDefs.lua", "server/recipeCoreDefs.lua")
 	downloadFile("recipeListAssembler.lua", "server/recipeListAssembler.lua")
-	downloadFile("recipes/craftingTable.lua", "server/craftingTable.lua")
+	downloadFile("recipes/craftingTable.lua", "defaultConfigs/defaultCraftingTable.lua")
+	downloadFile("recipes/furnace.lua", "defaultConfigs/defaultFurnace.lua")
 	print("File download is done!")
 	--Also need to construct a config
 	--file or two.
@@ -577,7 +577,6 @@ local function updateMSS()
 	fs.delete("recipeListLoader.lua")
 	fs.delete(commonCodePath.."/mssClient.lua")
 	fs.delete(commonCodePath.."/mssUtils.lua")
-	--In-Development Stuff:
 	fs.delete("recipeCoreDefs.lua")
 	fs.delete("recipeListAssembler.lua")
 	--Download fresh files now.
@@ -585,7 +584,6 @@ local function updateMSS()
 	downloadFile("recipeListLoader.lua", "server/recipeListLoader.lua")
 	downloadFile(commonCodePath.."/mssClient.lua", "client/mssClient.lua")
 	downloadFile(commonCodePath.."/mssUtils.lua", "common/mssUtils.lua")
-	--In-Development Stuff:
 	downloadFile("recipeCoreDefs.lua", "server/recipeCoreDefs.lua")
 	downloadFile("recipeListAssembler.lua", "server/recipeListAssembler.lua")
 	print("Update complete!")
