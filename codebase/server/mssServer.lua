@@ -1212,7 +1212,7 @@ local function interpretTaskEarly(taskTable, taskIndex)
 		--if this is not a crafting
 		--table recipe.
 		if recipeList[taskTable["eName"]][4] ~= "craftingTable" then
-			for _, target in pairs(mssU.getTableKeys(recipeList[taskTable["eName"]][3]))
+			for _, target in pairs(mssU.getTableKeys(recipeList[taskTable["eName"]][3])) do
 				addScanErrand(target)
 			end
 		end
