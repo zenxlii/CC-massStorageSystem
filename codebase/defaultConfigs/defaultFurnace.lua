@@ -19,7 +19,7 @@ end
 --User-Defined Recipes
 
 --Below is an example recipe.
-addRecipe({"minecraft:brick",1},64,{"minecraft:clay",1})
+addRecipe({"minecraft:brick",1},64,{{"minecraft:clay",1}})
 
 
 --Final Return Statement
