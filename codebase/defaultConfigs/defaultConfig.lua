@@ -50,6 +50,8 @@ local recipesDir = "recipes/"
 --cycling functionality of the server.
 --Defaults to false.
 local manageBatteries = false
+local emptyBatteries = ""
+local fullBatteries = ""
 
 --Stores the side of the first modem
 --the computer finds for ease of
@@ -81,5 +83,7 @@ requestsDir = requestsDir,
 modemSide = modemSide,
 recipesDir = recipesDir,
 commonCodeDisk = commonCodeDisk,
-manageBatteries = manageBatteries
+manageBatteries = manageBatteries,
+emptyBatteries = emptyBatteries,
+fullBatteries = fullBatteries
 }
