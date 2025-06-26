@@ -1017,7 +1017,7 @@ local function craftTask(taskTable)
 		--we can craft by now, do the
 		--movement stuffs.
 		for slot, iData in pairs(recipe[3]) do
-			fixedPushSpreader(self, slot, iData[1], iData[2])
+			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
 		end
 		dumpInventory()
 	else
@@ -1041,10 +1041,10 @@ local function craftTask(taskTable)
 		--If we get here, we know we
 		--have space.
 		for inv, iData in pairs(recipe[3]) do
-			dumbPushSpreader(inv, iData[1], iData[2])
+			dumbPushSpreader(inv, iData[1], iData[2] * maxCraft)
 		end
 	end
-	amountLeft = amountLeft - recipe[1]
+	amountLeft = amountLeft - recipe[1] * maxCraft
 	return amountLeft
 end
 
