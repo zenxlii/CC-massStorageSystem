@@ -1474,6 +1474,44 @@ local function readAllRequests()
 	end
 end
 
+--Battery Manager Logic
+local needsBatteries = {
+"expandedstorage:mini_chest_2"
+}
+local leavesBatteries = {
+"techreborn:storage_unit_57"
+}
+
+local function batteryScan()
+	for _, inv in ipairs(needsBatteries) do
+		addScanErrand(inv)
+	end
+	for _, inv in ipairs(leavesBatteries) do
+		addScanErrand(inv)
+	end
+end
+
+local function giveBattery()
+	for _, inv in ipairs(needsBatteries) do
+		if not scanReturns[inv][1] then
+			table.insert(pushErrands, function()
+				mssU.fastWrap(config.fullBatteries).pushItems(inv, 2, 1, 1)
+			end)
+			return
+		end
+	end
+end
+local function takeBattery()
+	for _, inv in ipairs(leavesBatteries) do
+		if scanReturns[inv][2] then
+			table.insert(pushErrands, function()
+				mssU.fastWrap(config.emptyBatteries).pullItems(inv, 2, 1, 1)
+			end)
+			return
+		end
+	end
+end
+
 --Default Tasks
 
 --Loads in every task defined in the
@@ -1501,6 +1539,9 @@ local flipper = true
 while true do
 	readAllRequests()
 	interpretTaskListEarly()
+	if config.manageBatteries then
+		batteryScan()
+	end
 	--Finally got scanErrands to be
 	--executed in parallel!
 	mssU.batchedParallel(scanErrands)
@@ -1512,6 +1553,10 @@ while true do
 	else
 		findCondense()
 		flipper = true
+	end
+	if config.manageBatteries then
+		giveBattery()
+		takeBattery()
 	end
 	executeAllErrands()
 	--Make sure that manifestFile is
