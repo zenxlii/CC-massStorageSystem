@@ -83,10 +83,12 @@ sh.stone = "minecraft:stone"
 sh.cobble = "minecraft:cobblestone"
 sh.rs = "minecraft:redstone"
 sh.iron = "minecraft:iron_ingot"
+sh.tin = "techreborn:tin_ingot"
 sh.refIron = "techreborn:refined_iron_ingot"
 sh.bmFrame = "techreborn:basic_machine_frame"
 sh.eCircuit = "techreborn:electronic_circuit"
 sh.treetap = "techreborn:treetap#552887824c43124013fd24f6edcde0fb"
+sh.cell = "techreborn:cell"
 
 return{
 makeCTableRecipe = makeCTableRecipe,
