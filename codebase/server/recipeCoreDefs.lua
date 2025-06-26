@@ -87,6 +87,7 @@ sh.sand = "minecraft:sand"
 sh.glass = "minecraft:glass"
 sh.dKelp = "minecraft:dried_kelp"
 sh.nRack = "minecraft:netherrack"
+sh.dirt = "minecraft:dirt"
 sh.rs = "minecraft:redstone"
 sh.iron = "minecraft:iron_ingot"
 sh.tin = "techreborn:tin_ingot"
@@ -98,6 +99,7 @@ sh.aCircuit = "techreborn:advanced_circuit"
 sh.iCircuit = "techreborn:industrial_circuit"
 sh.treetap = "techreborn:treetap#552887824c43124013fd24f6edcde0fb"
 sh.cell = "techreborn:cell"
+sh.brassP = "techreborn:brass_plate"
 
 return{
 makeCTableRecipe = makeCTableRecipe,
