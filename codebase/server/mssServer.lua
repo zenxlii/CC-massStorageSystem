@@ -976,7 +976,7 @@ local function maxCanCraft(ingTable, batchLim)
 	--much this recipe needs, and
 	--retain the lowest value we've
 	--seen.
-	local craftsPossible = math.huge
+	local craftsPossible = batchLim
 	for eName, amountPerCraft in pairs(ingAmounts) do
 		craftsPossible = math.min(math.floor(manifest[eName]["reserved"] / ingAmounts[eName]), craftsPossible)
 	end
@@ -1020,7 +1020,6 @@ local function craftTask(taskTable)
 			fixedPushSpreader(self, slot, iData[1], iData[2])
 		end
 		dumpInventory()
-		amountLeft = amountLeft - recipe[1]
 	else
 		--First we check to see if
 		--there's enough space in the
@@ -1044,8 +1043,8 @@ local function craftTask(taskTable)
 		for inv, iData in pairs(recipe[3]) do
 			dumbPushSpreader(inv, iData[1], iData[2])
 		end
-		amountLeft = amountLeft - recipe[1]
 	end
+	amountLeft = amountLeft - recipe[1]
 	return amountLeft
 end
 
