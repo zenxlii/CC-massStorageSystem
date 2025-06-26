@@ -11,6 +11,22 @@ local recipeFiles = fs.list(dir)
 --Can be overwritten later if needs be.
 local cond = require(config.commonCodeDisk..".configFiles.condenseList")
 
+for _, cData in ipairs(cond.condenseTable) do
+	--Write the recipe data in manually
+	--to avoid any risks of pass-by-
+	--reference screwing things up.
+	if cData[2] == "3x3" then
+		masterRecipeList[cData[1]] = {9, cData[4], {{cData[3], 1}}, "craftingTable"}
+	elseif cData[2] == "2x2" then
+		masterRecipeList[cData[1]] = {4, cData[4], {{cData[3], 1}}, "craftingTable"}
+	else
+		error("The condensing recipe for "..cData[1].." into "..cData[3].." has the unaccounted for recipe type of "..cData[2])
+	end
+end
+
+--Add the contents of every file in the
+--recipes/ directory to the
+--masterRecipeList.
 if recipeFiles ~= {} then
 	--Extract the recipeList table
 	--contents from each recipe library
