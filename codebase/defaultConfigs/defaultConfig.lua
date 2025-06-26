@@ -46,6 +46,10 @@ local requestsDir = commonCodeDisk.."/requests/"
 --default (for now).
 local recipesDir = "recipes/"
 
+--Enables or disables the battery
+--cycling functionality of the server.
+--Defaults to false.
+local manageBatteries = false
 
 --Stores the side of the first modem
 --the computer finds for ease of
@@ -76,5 +80,6 @@ clientExportBuffer = clientExportBuffer,
 requestsDir = requestsDir,
 modemSide = modemSide,
 recipesDir = recipesDir,
-commonCodeDisk = commonCodeDisk
+commonCodeDisk = commonCodeDisk,
+manageBatteries = manageBatteries
 }
