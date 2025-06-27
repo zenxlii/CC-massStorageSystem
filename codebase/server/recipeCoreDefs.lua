@@ -79,6 +79,9 @@ local sh = {}
 --Item Shorthands
 sh.stick = "minecraft:stick"
 sh.plank = "minecraft:birch_planks"
+sh.plankS = "minecraft:birch_slab"
+sh.chest = "minecraft:chest"
+sh.barrel = "minecraft:barrel"
 sh.stone = "minecraft:stone"
 sh.cobble = "minecraft:cobblestone"
 sh.furnace = "minecraft:furnace"
