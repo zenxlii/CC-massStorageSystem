@@ -12,6 +12,8 @@ A personal attempt at creating a Logistics Pipes/Refined Storage/Applied Energis
 
 >Full on-demand autocrafting capabilities (although only crafting table crafts currently have an implementation that can be used).
 
+>A built-in battery cycling feature which defaults to being disabled, but can be enabled to allow for the system to move power in a somewhat awkward way.
+
 # Setup Requirements
 1 (or more) Advanced Turtle(-s) as client(-s).\
 1 Advanced Crafty Turtle as the server (might be able to get away with a standard Crafty Turtle here, but that hasn't been tested).\
