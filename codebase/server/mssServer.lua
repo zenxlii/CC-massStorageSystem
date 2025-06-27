@@ -1478,10 +1478,12 @@ end
 
 --Battery Manager Logic
 local needsBatteries = {
-"expandedstorage:mini_chest_2"
+"expandedstorage:mini_chest_2",
+"expandedstorage:mini_chest_3"
 }
 local leavesBatteries = {
-"techreborn:storage_unit_57"
+"techreborn:storage_unit_57",
+"techreborn:storage_unit_61"
 }
 
 local function batteryScan()
