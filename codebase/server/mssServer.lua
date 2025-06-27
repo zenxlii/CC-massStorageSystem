@@ -1196,7 +1196,7 @@ local function interpretTaskEarly(taskTable, taskIndex)
 	local taskType = taskTable.taskType
 	if taskType == "output" or taskType == "craft" then
 		if taskTable["amount"] <= 0 then
-			print("A "..taskType.." task for "..taskTable.eName.." is totally done")
+			--print("A "..taskType.." task for "..taskTable.eName.." is totally done")
 			masterTaskList[taskIndex] = nil
 			return
 		end
@@ -1334,6 +1334,7 @@ local function checkCraftViabilityStep(eName, amount, craftManifest)
 		--need to craft it, pass back
 		--up that it isn't possible.
 		if not recipeList[eName] then
+			print(eName.." has no recipe!")
 			return false
 		end
 		local craftsNeeded = amountOfTimesToCraft(eName, craftManifest[eName]["amountToMake"])
@@ -1374,6 +1375,7 @@ local function checkCraftViability(eName, amount)
 		--need to craft it, pass back
 		--up that it isn't possible.
 		if not recipeList[eName] then
+			print(eName.." has no recipe!")
 			return false
 		end
 		local craftsNeeded = amountOfTimesToCraft(eName, craftManifest[eName]["amountToMake"])
