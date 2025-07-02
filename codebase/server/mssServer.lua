@@ -1400,12 +1400,15 @@ local function checkCraftViability(eName, amount)
 	--main loop iteration.
 	for itemName, itemData in pairs(craftManifest) do
 		if itemData["wantedTotal"] > 0 then
+			print("Item: "..itemName)
 			if itemData["amountToTake"] > 0 then
 				freeToReserved(itemName, itemData["amountToTake"])
+				print("Taking "..itemData["amountToMake"])
 			end
 			if itemData["amountToMake"] > 0 then
 				manifest[itemName]["pending"] = manifest[itemName]["pending"] + itemData["amountToMake"]
 				table.insert(masterTaskList, {["taskType"] = "craft", ["eName"] = itemName, ["amount"] = itemData["amountToMake"]})
+				print("Making "..itemData["amountToMake"])
 			end
 		end
 	end
@@ -1537,6 +1540,9 @@ testTask["target"] = "expandedstorage:chest_3"
 --masterTaskList[1] = testTask
 
 print("Ready to go!")
+
+print(recipeList["minecraft:iron_ingot"][1])
+print(recipeList["minecraft:iron_ingot"][3][1][2])
 
 local flipper = true
 
