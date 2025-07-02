@@ -116,6 +116,7 @@ sh.tinC = "techreborn:tin_cable"
 sh.copperC = "techreborn:copper_cable"
 sh.goldC = "techreborn:gold_cable"
 sh.hvC = "techreborn:hv_cable"
+sh.rubber = "techreborn:rubber"
 
 return{
 makeCTableRecipe = makeCTableRecipe,
