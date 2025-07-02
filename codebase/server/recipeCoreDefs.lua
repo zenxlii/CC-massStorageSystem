@@ -111,6 +111,7 @@ sh.goldP = "techreborn:gold_plate"
 sh.copperP = "techreborn:copper_plate"
 sh.tinP = "techreborn:tin_plate"
 sh.brassP = "techreborn:brass_plate"
+sh.refIronP = "techreborn:refined_iron_plate"
 
 return{
 makeCTableRecipe = makeCTableRecipe,
