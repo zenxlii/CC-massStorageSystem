@@ -1420,6 +1420,7 @@ end
 --Handles a single "step" of making the
 --initial crafting tree.
 local function craftTreeStepFunc(wantedItem, layerNum, craftingTree)
+	print(wantedItem)
 	if craftingTree[wantedItem] == nil then
 		craftingTree[wantedItem] = {}
 		if recipeList[wantedItem] then
