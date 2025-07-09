@@ -1417,6 +1417,131 @@ local function checkCraftViability(eName, amount)
 	return true
 end
 
+--Handles a single "step" of making the
+--initial crafting tree.
+local function craftTreeStepFunc(wantedItem, layerNum, craftingTree)
+	if not craftingTree[wantedItem] then
+		craftingTree[wantedItem] = {}
+		if recipeList[wantedItem] then
+			craftingTree[wantedItem].hasRecipe = true
+		else
+			craftingTree[wantedItem].hasRecipe = false
+		end
+		craftingTree[wantedItem].deepestLayer = 0
+	end
+	if craftingTree[wantedItem].deepestLayer < layerNum then
+		craftingTree[wantedItem].deepestLayer = layerNum
+		if craftingTree[wantedItem].hasRecipe then
+			for _, ing in pairs(recipeList[wantedItem][3]) do
+				craftTreeStepFunc(ing[1], layerNum + 1, craftingTree)
+			end
+		end
+	end
+end
+
+--Starter function for figuring out the
+--recipes and items that could be
+--relevant for the upcoming crafting
+--request.
+local function craftTreeConstructor(desiredItem)
+	if not recipeList[desiredItem] then
+		return false
+	end
+	local craftingTree = {}
+	craftingTree[desiredItem] = {}
+	craftingTree[desiredItem].hasRecipe = true
+	craftingTree[desiredItem].deepestLayer = 1
+	--Not compatible with multiple
+	--recipes per item currently.
+	local ingredients = recipeList[desiredItem][3]
+	for _, ing in pairs(ingredients) do
+		craftTreeStepFunc(ing[1], 2, craftingTree)
+	end
+	return craftingTree
+end
+
+--New version of the function that
+--determines if a crafting request is
+--doable, and makes a plan to execute
+--said request.
+local function evaluateCraftRequest(desiredItem, desiredAmount)
+	local craftingTree = craftTreeConstructor(desiredItem)
+	if craftingTree == false then
+		return false
+	end
+	--From here on out, we know that we
+	--have a crafting tree to evaluate.
+	
+	--Reorganise the information in the
+	--craftingTree so that it is
+	--indexed by tree depth on the
+	--outermost layer rather than by
+	--encoded names.
+	local depthTree = {}
+	for eName, data in pairs(craftingTree) do
+		local layerNum = data.deepestLayer
+		if not depthTree[layerNum] then
+			depthTree[layerNum] = {}
+		end
+		depthTree[layerNum][eName] = {}
+		depthTree[layerNum][eName].toTake = 0
+		depthTree[layerNum][eName].hasRecipe = data.hasRecipe
+		if data.hasRecipe then
+			depthTree[layerNum][eName].toMake = 0
+			depthTree[layerNum][eName].craftsNeeded = 0
+		end
+		if eName == desiredItem then
+			depthTree[layerNum][eName].wanted = 0
+		else
+			depthTree[layerNum][eName].wanted = desiredAmount
+		end
+	end
+	
+	
+	
+	--Iterate layer-by-layer to figure
+	--out how many of each item we need
+	--to make the crafting plan work.
+	for layerNum, items in ipairs(depthTree) do
+		for eName, data in pairs(items) do
+			if data.wanted > 0 then
+				if not manifest[eName] then
+					return false
+				end
+				local amountPresent = manifest[eName].free
+				if amountPresent >= data.wanted then
+					data.toTake = data.wanted
+				elseif data.hasRecipe then
+					data.toTake = amountPresent
+					data.toMake = data.wanted - amountPresent
+					data.craftsNeeded = math.ceil(data.toMake / recipeList[eName][1])
+					for _, ingData in pairs(recipeList[eName][3]) do
+						local ingDepth = craftingTree[ingData[1]].deepestLayer
+						depthTree[ingDepth][ingData[1]].wanted = depthTree[ingDepth][ingData[1]].wanted + ingData[2] * data.craftsNeeded
+					end
+				else
+					return false
+				end
+			end
+		end
+	end
+	
+	--If we make it here, the request
+	--should be doable.
+	for layerNum, items in ipairs(depthTree) do
+		for eName, data in pairs(items) do
+			freeToReserved(eName, data.toTake)
+			manifest[eName].pending = manifest[eName].pending + data.toMake
+			if data.toMake > 0 then
+				table.insert(masterTaskList, {["taskType"] = "craft", ["eName"] = eName, ["amount"] = data.toMake})
+			end
+		end
+	end
+	table.insert(masterTaskList, {["taskType"] = "output", ["eName"] = desiredItem, ["amount"] = desiredAmount, ["target"] = clientExportBuffer})
+	saveDisplayManifest()
+	return true
+end
+
 --Client Request Interpretation
 
 --Takes a file name, reads the request
@@ -1458,7 +1583,8 @@ local function readRequest(fileName)
 			table.insert(masterTaskList, requestTask)
 			rednet.send(sender, true, "mssClient")
 		else
-			local checkCraft = checkCraftViability(requestData["item"], requestData["amount"])
+			--local checkCraft = checkCraftViability(requestData["item"], requestData["amount"])
+			local checkCraft = evaluateCraftRequest(requestData["item"], requestData["amount"])
 			if checkCraft == true then
 				rednet.send(sender, true, "mssClient")
 			else
