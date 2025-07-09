@@ -1491,9 +1491,9 @@ local function evaluateCraftRequest(desiredItem, desiredAmount)
 			depthTree[layerNum][eName].craftsNeeded = 0
 		end
 		if eName == desiredItem then
-			depthTree[layerNum][eName].wanted = 0
-		else
 			depthTree[layerNum][eName].wanted = desiredAmount
+		else
+			depthTree[layerNum][eName].wanted = 0
 		end
 	end
 	
@@ -1530,10 +1530,12 @@ local function evaluateCraftRequest(desiredItem, desiredAmount)
 	--should be doable.
 	for layerNum, items in ipairs(depthTree) do
 		for eName, data in pairs(items) do
-			freeToReserved(eName, data.toTake)
+			if data.toTake > 0 then
+				freeToReserved(eName, data.toTake)
+			end
 			if data.toMake then
-				manifest[eName]["pending"] = manifest[eName]["pending"] + data.toMake
 				if data.toMake > 0 then
+					manifest[eName]["pending"] = manifest[eName]["pending"] + data.toMake
 					table.insert(masterTaskList, {["taskType"] = "craft", ["eName"] = eName, ["amount"] = data.toMake})
 				end
 			end
