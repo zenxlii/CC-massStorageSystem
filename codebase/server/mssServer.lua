@@ -1531,7 +1531,7 @@ local function evaluateCraftRequest(desiredItem, desiredAmount)
 	for layerNum, items in ipairs(depthTree) do
 		for eName, data in pairs(items) do
 			freeToReserved(eName, data.toTake)
-			manifest[eName].pending = manifest[eName].pending + data.toMake
+			manifest[eName]["pending"] = manifest[eName]["pending"] + data.toMake
 			if data.toMake > 0 then
 				table.insert(masterTaskList, {["taskType"] = "craft", ["eName"] = eName, ["amount"] = data.toMake})
 			end
