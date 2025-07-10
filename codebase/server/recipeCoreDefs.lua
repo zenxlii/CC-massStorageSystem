@@ -80,6 +80,7 @@ local sh = {}
 sh.shaft = "create:shaft"
 sh.cog = "create:cogwheel"
 sh.bigCog = "create:large_cogwheel"
+sh.eTube = "create:electron_tube"
 sh.blackDye = "minecraft:black_dye"
 sh.netherite = "minecraft:netherite_ingot"
 sh.stick = "minecraft:stick"
