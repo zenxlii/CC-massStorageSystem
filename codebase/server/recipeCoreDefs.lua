@@ -77,6 +77,7 @@ end
 --(called "sh" for compactness)
 local sh = {}
 --Item Shorthands
+sh.blackDye = "minecraft:black_dye"
 sh.netherite = "minecraft:netherite_ingot"
 sh.stick = "minecraft:stick"
 sh.plank = "minecraft:birch_planks"
