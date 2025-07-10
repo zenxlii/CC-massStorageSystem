@@ -77,6 +77,7 @@ end
 --(called "sh" for compactness)
 local sh = {}
 --Item Shorthands
+sh.belt = "create:belt_connector"
 sh.shaft = "create:shaft"
 sh.cog = "create:cogwheel"
 sh.bigCog = "create:large_cogwheel"
