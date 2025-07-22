@@ -56,24 +56,25 @@ local function saveDisplayManifest()
 	--of the current manifest that the
 	--clients are to use.
 	local displayManifest = {}
+	--Also compacts the table keys.
 	for eName, data in pairs(manifest) do
 		displayManifest[eName] = {}
-		displayManifest[eName]["amount"] = data["free"]
-		displayManifest[eName]["displayName"] = data["displayName"]
+		displayManifest[eName]["a"] = data["free"]
+		displayManifest[eName]["n"] = data["displayName"]
 		--Only adds the maxStack if it
 		--isn't 64, as we assume it is
 		--64 if omitted.
 		if data["maxStack"] ~= 64 then
-			displayManifest[eName]["maxStack"] = data["maxStack"]
+			displayManifest[eName]["s"] = data["maxStack"]
 		end
 		--Only adds hasRecipe if it has
 		--a recipe, as we assume it
 		--doesn't if omitted.
 		if recipeList[eName] then
-			displayManifest[eName]["hasRecipe"] = true
+			displayManifest[eName]["r"] = true
 		end
 	end
-	local serialDM = textutils.serialise(displayManifest)
+	local serialDM = textutils.serialise(displayManifest, {compact = true})
 	--Check if a manifestFile exists at
 	--all.
 	if fs.exists(manifestFile) then
@@ -123,11 +124,17 @@ local function loadDataFromDM()
 	--Add the missing maxStack and
 	--hasRecipe values back in.
 	for eName, data in pairs(outData) do
-		if data["maxStack"] == nil then
+		data["amount"] = data["a"]
+		data["displayName"] = data["n"]
+		if data["s"] == nil then
 			data["maxStack"] = 64
+		else
+			data["maxStack"] = data["s"]
 		end
-		if data["hasRecipe"] == nil then
+		if data["r"] == nil then
 			data["hasRecipe"] = false
+		else
+			data["hasRecipe"] = data["r"]
 		end
 	end
 	return outData

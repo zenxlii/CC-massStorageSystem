@@ -100,12 +100,19 @@ local function readDisplayManifest()
 	displayManifest = textutils.unserialise(dmSerial)
 	--Add the missing maxStack and
 	--hasRecipe values back in.
+	--Also decompacts the table keys.
 	for eName, data in pairs(displayManifest) do
-		if data["maxStack"] == nil then
+		data["amount"] = data["a"]
+		data["displayName"] = data["n"]
+		if data["s"] == nil then
 			data["maxStack"] = 64
+		else
+			data["maxStack"] = data["s"]
 		end
-		if data["hasRecipe"] == nil then
+		if data["r"] == nil then
 			data["hasRecipe"] = false
+		else
+			data["hasRecipe"] = data["r"]
 		end
 	end
 end
