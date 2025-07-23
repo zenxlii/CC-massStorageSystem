@@ -159,8 +159,12 @@ sh.aAlloyP = "techreborn:advanced_alloy_plate"
 sh.steelP = "techreborn:steel_plate"
 sh.tinC = "techreborn:tin_cable"
 sh.copperC = "techreborn:copper_cable"
+sh.copperIC = "techreborn:insulated_copper_cable"
 sh.goldC = "techreborn:gold_cable"
+sh.goldIC = "techreborn:insulated_gold_cable"
 sh.hvC = "techreborn:hv_cable"
+sh.hvIC = "techreborn:insulated_hv_cable"
+sh.glassC = "techreborn:glassfiber_cable"
 sh.rubber = "techreborn:rubber"
 
 return{
