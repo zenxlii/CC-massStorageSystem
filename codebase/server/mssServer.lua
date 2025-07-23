@@ -74,7 +74,7 @@ local function saveDisplayManifest()
 			displayManifest[eName]["r"] = true
 		end
 	end
-	local serialDM = textutils.serialise(displayManifest, {compact = false})
+	local serialDM = textutils.serialise(displayManifest, {compact = true})
 	--Check if a manifestFile exists at
 	--all.
 	if fs.exists(manifestFile) then
