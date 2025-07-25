@@ -77,6 +77,26 @@ end
 --(called "sh" for compactness)
 local sh = {}
 --Item Shorthands
+
+--Dyes
+sh.blackDye = "minecraft:black_dye"
+sh.redDye = "minecraft:red_dye"
+sh.greenDye = "minecraft:green_dye"
+sh.brownDye = "minecraft:brown_dye"
+sh.blueDye = "minecraft:blue_dye"
+sh.purpleDye = "minecraft:purple_dye"
+sh.cyanDye = "minecraft:cyan_dye"
+sh.lightGreyDye = "minecraft:light_gray_dye"
+sh.greyDye = "minecraft:gray_dye"
+sh.pinkDye = "minecraft:pink_dye"
+sh.limeDye = "minecraft:lime_dye"
+sh.yellowDye = "minecraft:yellow_dye"
+sh.lightBlueDye = "minecraft:light_blue_dye"
+sh.magentaDye = "minecraft:magenta_dye"
+sh.orangeDye = "minecraft:orange_dye"
+sh.whiteDye = "minecraft:white_dye"
+
+--Others
 sh.belt = "create:belt_connector"
 sh.shaft = "create:shaft"
 sh.cog = "create:cogwheel"
@@ -86,7 +106,6 @@ sh.aCasing = "create:andesite_casing"
 sh.bCasing = "create:brass_casing"
 sh.cCasing = "create:copper_casing"
 sh.tCasing = "create:railway_casing"
-sh.blackDye = "minecraft:black_dye"
 sh.netherite = "minecraft:netherite_ingot"
 sh.stick = "minecraft:stick"
 sh.plank = "minecraft:birch_planks"
