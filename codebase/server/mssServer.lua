@@ -1027,6 +1027,8 @@ local function craftTask(taskTable)
 			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
 		end
 		dumpInventory()
+	elseif recipe[4] == "takeFromContainer" then
+		
 	else
 		--First we check to see if
 		--there's enough space in the
