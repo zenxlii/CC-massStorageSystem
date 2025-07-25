@@ -967,6 +967,11 @@ end
 --of times we can craft a recipe with
 --what's currently in storage.
 local function maxCanCraft(ingTable, batchLim)
+	--Special case handler for recipes
+	--with no ingredients.
+	if not ingTable then
+		return math.huge
+	end
 	--Expand out to find out how much
 	--of each ingredient we need to do
 	--one craft of the item.
@@ -1027,8 +1032,22 @@ local function craftTask(taskTable)
 			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
 		end
 		dumpInventory()
-	elseif recipe[4] == "takeFromContainer" then
-		
+	elseif recipe[4] == "infiniteRetrieve" then
+		local pullInv = recipe[5][1]
+		local pullSlot = recipe[5][2]
+		if pullSlot ~= 0 then
+			local targetSlotData = scanReturns[pullInv][pullSlot]
+			if targetSlotData then
+				local quantInSlot = targetSlotData.count
+				local pullAmount = math.min(maxCraft, quantInSlot)
+				addPullErrand(pullInv, pullSlot, pullAmount, eName)
+				scanReturns[pullInv][pullSlot] = false
+			end
+		else
+			--TODO: Add the slot 0
+			--means extract from all
+			--slots shortcut.
+		end
 	else
 		--First we check to see if
 		--there's enough space in the

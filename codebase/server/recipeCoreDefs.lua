@@ -72,6 +72,15 @@ local function makeExternalRecipe(productTable, batchLim, ingredientsTable, reci
 	return productTable[1], recipe
 end
 
+local function makeInfiniteRetrieveRecipe(productEName, batchLim, pullInv, pullSlot)
+	local recipe = {}
+	recipe[1] = 1
+	recipe[2] = batchLim
+	recipe[3] = nil
+	recipe[4] = "infiniteRetrieve"
+	recipe[5] = {pullInv, pullSlot}
+	return productEName, recipe
+end
 --Item Shorthand Table
 
 --(called "sh" for compactness)
