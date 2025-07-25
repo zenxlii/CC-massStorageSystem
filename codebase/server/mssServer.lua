@@ -1678,9 +1678,6 @@ testTask["target"] = "expandedstorage:chest_3"
 
 print("Ready to go!")
 
-print(recipeList["minecraft:iron_ingot"][1])
-print(recipeList["minecraft:iron_ingot"][3][1][2])
-
 local flipper = true
 
 while true do
