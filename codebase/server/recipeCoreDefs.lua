@@ -203,5 +203,6 @@ sh.rubber = "techreborn:rubber"
 return{
 makeCTableRecipe = makeCTableRecipe,
 makeExternalRecipe = makeExternalRecipe,
+makeInfiniteRetrieveRecipe = makeInfiniteRetrieveRecipe,
 sh = sh
 }
