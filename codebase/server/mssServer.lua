@@ -1459,7 +1459,7 @@ local function craftTreeStepFunc(wantedItem, layerNum, craftingTree)
 	end
 	if craftingTree[wantedItem].deepestLayer < layerNum then
 		craftingTree[wantedItem].deepestLayer = layerNum
-		if craftingTree[wantedItem].hasRecipe then
+		if craftingTree[wantedItem].hasRecipe and recipeList[wantedItem][4] ~= "infiniteRetrieve" then
 			for _, ing in pairs(recipeList[wantedItem][3]) do
 				craftTreeStepFunc(ing[1], layerNum + 1, craftingTree)
 			end
