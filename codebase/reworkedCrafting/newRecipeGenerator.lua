@@ -1,3 +1,26 @@
+--Note:
+--This must be ran on a turtle to
+--function at all.
+
+local function nameEncode(iName, iNBT)
+	if iNBT == "" or iNBT == nil then
+		return iName
+	else
+		return iName.."#"..iNBT
+	end
+end
+
+--GUI Drawing Functions
+
+--Renamed Shorthands
+local function pos(...) return term.setCursorPos(...) end
+local function cls(...) return term.clear() end
+local function tCol(...) return term.setTextColour(...) end
+local function bCol(...) return term.setBackgroundColour(...) end
+local function box(...) return paintutils.drawFilledBox(...) end
+local function line(...) return paintutils.drawLine(...) end 
+local x,y = term.getSize()
+
 local compactedFiles = false
 
 local craftingTypeTable = {}
@@ -34,25 +57,29 @@ if craftingTypeTable[recipeType] ~= nil then
 end
 while recipeType == "doesn't exist, please don't use this as a recipe type you-" do
 	local prompt = {}
-	prompt[1] = ""
-	prompt[2] = ""
-	prompt[3] = "What crafting type would you like this"
-	prompt[4] = "recipe to be? Valid values are:"
-	local i = 5
+	prompt[1] = "What crafting type would you like this"
+	prompt[2] = "recipe to be? Valid values are:"
+	local i = 3
 	for line, _ in pairs(craftingTypeTable) do
 		prompt[i] = line
 		i = i + 1
 	end
 	i = nil
 	local width, height = term.getCursorPos()
-	textutils.pagedPrint(prompt, height - 2)
+	textutils.pagedPrint(prompt, height - 4)
 	
 	local input = io.read()
 	if craftingTypeTable[input] == nil then
-		prompt[1] = input
-		prompt[2] = "is not a valid value."
+		print(input)
+		print("is not a valid value.")
 	else
-		recipeType = input
+		print("Is the following correct?")
+		print("Y for Yes, otherwise No")
+		print(input)
+		local confirm = string.lower(io.read())
+		if confirm == "y" then
+			recipeType = input
+		end
 	end
 end
 
@@ -62,5 +89,73 @@ end
 --Anything more complicated than this
 --will require writing the recipe
 --manually.
+--But like... that really only leaves,
+--what, the Mechanical Crafter from
+--Create?
+--Also is limited by the stack sizes
+--of the items themselves.
+
+--TODO:
+--Add hinting data to the crafting
+--types, and then add support to show
+--those hints in this section.
+local outSlots = {false,false,false,true,false,false,false,true,false,false,false,true,true,true,true,true}
+local slotOrder = {1,2,3,7,4,5,6,6,7,8,9,5,4,3,2,1}
 local recipeInputs = {}
 local recipeOutputs = {}
+local recipeItemBuffer = {}
+local isRecipeSet = false
+term.clear()
+term.setCursorPos(1,1)
+print("Place the ingredients and results in")
+print("the appropriate slots below, matching")
+print("their slot numbers according to the")
+print("crafting type that was selected,")
+print(recipeType)
+print("Top-left 3x3 is for ingredients.")
+print("All other slots are for results.")
+print("Press ENTER when everything is")
+print("in place.")
+io.read()
+for i = 1,16 do
+	recipeItemBuffer[i] = turtle.getItemDetail(i, true)
+end
+if recipeItemBuffer == {} then
+	error("No items?")
+end
+for slot, item in pairs(recipeItemBuffer) do
+	local eName = nameEncode(item.name, item.nbt)
+	local amount = item.count
+	if outSlots[slot] then
+		recipeOutputs[slotOrder[slot]] = {eName, amount}
+	else
+		recipeInputs[slotOrder[slot]] = {eName, amount}
+	end
+end
+
+--Set the maximum batch size.
+term.clear()
+term.setCursorPos(1,1)
+local batchSize = 0
+while batchSize == 0 do
+	print("Next, what is the maximum batch size")
+	print("for this recipe?")
+	local input = io.read()
+	local inputNum = tonumber(input)
+	if inputNum ~= nil then
+		inputNum = math.floor(inputNum)
+		if inputNum > 0 then
+			print(inputNum)
+			print("Are you sure? Y for Yes, otherwise No")
+			local input2 = string.lower(io.read())
+			if input2 == "y" then
+				batchSize = inputNum
+			end
+		else
+			print("That was less than 1!")
+		end
+	else
+		print("That was not a number!")
+	end
+end
+
