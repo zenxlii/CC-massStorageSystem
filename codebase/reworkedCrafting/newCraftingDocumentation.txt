@@ -64,4 +64,13 @@ table, and are as follows:
 -Allows for this recipe to override
 other recipes.
 
+~~~~Creating New Recipes:
+It is recommended that you use a tool
+like newRecipeGenerator.lua to create
+crafting recipes for massStorageSystem,
+due to the data density of the format.
+New recipe types, however, will need to
+be implemented as functions in code for
+the time being.
+
 ~~~~Implementation Specifics:
