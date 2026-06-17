@@ -1,1 +1,67 @@
-~~~~Recipe Format:
+~~~~Recipe Format (table):
+Index 1 stores a table containing the
+recipe's outputs or results.
+Each output should be a sub-table which
+contains the item's encoded name with
+no shorthands allowed, followed by how
+many of said item are produced by the
+recipe.
+
+Index 2 stores a table containing the
+recipe's inputs or ingredients.
+Each input should be a sub-table which
+contains the item's encoded name with
+no shorthands allowed, followed by how
+many of said item are produced by the
+recipe.
+The inputs need to be indexed by either
+the slot number of the target inventory
+they are intended for, or the inventory
+reference ID for the crafting type,
+depending on the crafting type.
+(craftingTable is slot-based).
+
+Index 3 is the maximum batch size for
+this recipe.
+Setting this to 1 is safe for any valid
+recipe, but you should never set this
+higher than any of the amount of output
+items that the output container can
+store (for slot-based crafting types),
+or the maximum stack size for a given
+ingredient divided by how much of it is
+needed per craft, whichever is lower.
+
+Index 4 is the crafting type for this
+recipe.
+This is used to determine where the
+ingredients are sent, where to expect
+the results to come from (for slot-
+based crafting types), and if the
+server should use a slot-based or
+inventory-based handler for this
+particular recipe.
+
+Index 5 is the priority level assigned
+to this recipe.
+If not explicitly included, assume this
+is equal to 1.
+Higher values mean that this recipe
+will be chosen after all lower priority
+recipes for the desired result have
+been exhausted.
+The recipe loader script will error out
+if two recipes share an output item and
+a priority level without an override
+flag set in the recipe found later in
+the text file.
+
+Index 6 is used for giving special
+flags to this recipe.
+These flags are to be supplied in a
+table, and are as follows:
+>o
+-Allows for this recipe to override
+other recipes.
+
+~~~~Implementation Specifics:
