@@ -212,8 +212,9 @@ local file = fs.open("recipeData.txt", "r")
 local rdText = file.readAll()
 local masterRecipeList = textutils.unserialise(rdText)
 file.close()
-print(rdText)
-print(masterRecipeList)
+if masterRecipeList == nil then
+	masterRecipeList = {}
+end
 table.insert(masterRecipeList, finalRecipeTable)
 local file = fs.open("recipeData.txt", "w")
 file.write(textutils.serialise(masterRecipeList, {compact = compactedFiles}))
