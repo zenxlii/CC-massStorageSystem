@@ -41,7 +41,7 @@ end
 --Load the contents of
 --craftingTypes.txt into a table.
 local ctFile = fs.open("craftingTypes.txt", "r")
-craftingTypeTable = textutils.unserialise(ctFile)
+craftingTypeTable = textutils.unserialise(ctFile.readAll())
 ctFile = nil
 
 local recipeTable = {}
@@ -206,7 +206,7 @@ finalRecipeTable[4] = recipeType
 finalRecipeTable[5] = priority
 
 local file = fs.open("recipeData.txt", "r")
-local masterRecipeList = textutils.unserialise(file)
+local masterRecipeList = textutils.unserialise(file.readAll())
 file.close()
 table.insert(masterRecipeList, finalRecipeTable)
 local file = fs.open("recipeData.txt", "w")
