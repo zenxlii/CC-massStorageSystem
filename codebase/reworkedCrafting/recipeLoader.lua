@@ -9,7 +9,7 @@ if not fs.exists("craftingTypes.txt") then
 	ctct[1] = "c"
 	ctct[2] = {"server"}
 	ctct[3] = {1,2,3,5,6,7,9,10,11}
-	ctct[4] = {16}
+	ctct[4] = {}
 	craftingTypeTable["craftingTable"] = ctct
 	file.write(textutils.serialise(craftingTypeTable, {compact = compactedFiles}))
 	file.close()
@@ -19,11 +19,106 @@ end
 --Load the contents of
 --craftingTypes.txt into a table.
 local ctFile = fs.open("craftingTypes.txt", "r")
-craftingTypeTable = textutils.unserialise(ctFile)
+craftingTypeTable = textutils.unserialise(ctFile.readAll())
+ctFile.close()
 ctFile = nil
 
 local masterRecipeTable = {}
+--Makes recipeData.txt if it does
+--not exist and initialises it.
+if not fs.exists("recipeData.txt") then
+	local file = fs.open("recipeData.txt", "w")
+	local rd = {}
+	rd[1] = {{"minecraft:torch",4}}
+	rd[2] = {{"minecraft:charcoal",1},nil,nil,nil,{"minecraft:stick",1},nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil}
+	rd[3] = 64
+	rd[4] = "craftingTable"
+	masterRecipeTable[1] = rd
+	file.write(textutils.serialise(masterRecipeTable, {compact = compactedFiles}))
+	file.close()
+	masterRecipeTable = {}
+end
+
+--Load the contents of recipeData.txt
+--into a table.
+local rdFile = fs.open("recipeData.txt", "r")
+masterRecipeTable = textutils.unserialise(rdFile.readAll())
+rdFile.close()
+rdFile = nil
 
 local function makeSlotBasedRecipe(recipeDataTable)
-	
+	return "bruh"
 end
+
+local function makeInventoryBasedRecipe(recipeDataTable)
+	return "bruh"
+end
+
+local function makeCraftingTableRecipeSpecial(recipeDataTable)
+	return "bruh"
+end
+
+--Create a table that assigns recipes
+--to the encoded names of their
+--output(-s).
+local recipeMap = {}
+for i, recipe in ipairs(masterRecipeTable) do
+	local priority = 0
+	if recipe[5] ~= nil then
+		priority = recipe[5]
+	end
+	for _, item in ipairs(recipe[1]) do
+		if recipe[5] == nil then
+			if recipeMap[item[1]] == nil then
+				recipeMap[item[1]] = {}
+			end
+			priority = #recipeMap[item[1]] + 1
+		end
+		if recipe[6] == nil then
+			if recipeMap[item[1]] == nil then
+				recipeMap[item[1]] = {}
+			end
+			if recipeMap[item[1]][priority] == nil then
+				recipeMap[item[1][priority] = i
+			else
+				if recipe[5] then
+					recipeMap[item[1]][priority] = i
+				else
+					print("A recipe is trying to override another")
+					print("without the proper permissions!")
+					print(item[1])
+					print(i)
+					error("Check this recipe ID!")
+				end
+			end
+		else
+			--Deliberately skips over
+			--items excluded by
+			--recipe[6]'s contents.
+			if not recipe[6][item[1]] then
+				if recipeMap[item[1]] == nil then
+					recipeMap[item[1]] = {}
+				end
+				if recipeMap[item[1]][priority] == nil then
+					recipeMap[item[1][priority] = i
+				else
+					if recipe[5] then
+						recipeMap[item[1]][priority] = i
+					else
+						print("A recipe is trying to override another")
+						print("without the proper permissions!")
+						print(item[1])
+						print(i)
+						error("Check this recipe ID!")
+					end
+				end
+			end
+		end
+	end
+end
+
+return{
+craftingTypeTable = craftingTypeTable,
+masterRecipeTable = masterRecipeTable,
+recipeMap = recipeMap
+}

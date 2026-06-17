@@ -43,26 +43,16 @@ inventory-based handler for this
 particular recipe.
 
 Index 5 is the priority level assigned
-to this recipe.
-If not explicitly included, assume this
-is equal to 1.
-Higher values mean that this recipe
-will be chosen after all lower priority
-recipes for the desired result have
-been exhausted.
-The recipe loader script will error out
-if two recipes share an output item and
-a priority level without an override
-flag set in the recipe found later in
-the text file.
+to this recipe and if it is to
+override another recipe. Leave this
+blank if you don't want to override
+anything.
 
-Index 6 is used for giving special
-flags to this recipe.
-These flags are to be supplied in a
-table, and are as follows:
->o
--Allows for this recipe to override
-other recipes.
+Index 6 lists item encoded names that
+should not have this recipe put under
+them in the recipeMap.
+Good for recipes that return empty
+fluid containers.
 
 ~~~~Crafting Type Format (table):
 These are indexed by name.
@@ -100,7 +90,7 @@ Index 3 is used by slot-based crafting
 types to specify which slot(-s) that
 ingredients are to be placed in.
 
-Index 4 is used by "c"-class crafting
+Index 4 is used by "s"-class crafting
 types to specify which slots may have
 output items for post-operation
 extraction.
