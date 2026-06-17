@@ -185,7 +185,7 @@ while priority == 0 do
 		end
 	end
 end
-if priority = "nope" then
+if priority == "nope" then
 	priority = nil
 end
 
