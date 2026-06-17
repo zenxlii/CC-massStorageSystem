@@ -64,6 +64,47 @@ table, and are as follows:
 -Allows for this recipe to override
 other recipes.
 
+~~~~Crafting Type Format (table):
+These are indexed by name.
+
+Index 1 is one of the following
+strings:
+>"i"
+-Inventory-based crafting type, uses a
+different inventory for each input slot
+of the final crafting machine and
+expects the results to be pulled back
+into the system via, say, an import
+task.
+>"c"
+-Slot-based crafting type that is
+specific to crafting table recipes.
+Makes use of the server turtle's crafty
+capabilities.
+Use crafting table grid slot numberings
+for this (see below).
+ 1 | 2 | 3 
+―――+―――+―――
+ 4 | 5 | 6 
+―――+―――+―――
+ 7 | 8 | 9 
+
+Index 2 is a table of inventories that
+this crafting type inserts items into.
+If a crafting type only needs one
+inventory, it still must be in a table.
+The order of these may be important!
+Left as "server" when index 1 is "c".
+
+Index 3 is used by slot-based crafting
+types to specify which slot(-s) that
+ingredients are to be placed in.
+
+Index 4 is used by "c"-class crafting
+types to specify which slots may have
+output items for post-operation
+extraction.
+
 ~~~~Creating New Recipes:
 It is recommended that you use a tool
 like newRecipeGenerator.lua to create
