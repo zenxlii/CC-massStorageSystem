@@ -44,10 +44,6 @@ local ctFile = fs.open("craftingTypes.txt", "r")
 craftingTypeTable = textutils.unserialise(ctFile.readAll())
 ctFile = nil
 
-for key, value in pairs(craftingTypeTable) do
-	print(key)
-end
-
 local recipeTable = {}
 --Ensures that recipeData.txt exists.
 if not fs.exists("recipeData.txt") then
@@ -216,6 +212,8 @@ local file = fs.open("recipeData.txt", "r")
 local rdText = file.readAll()
 local masterRecipeList = textutils.unserialise(rdText)
 file.close()
+print(rdText)
+print(masterRecipeList)
 table.insert(masterRecipeList, finalRecipeTable)
 local file = fs.open("recipeData.txt", "w")
 file.write(textutils.serialise(masterRecipeList, {compact = compactedFiles}))
