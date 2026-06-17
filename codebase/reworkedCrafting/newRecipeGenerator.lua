@@ -213,7 +213,8 @@ finalRecipeTable[4] = recipeType
 finalRecipeTable[5] = priority
 
 local file = fs.open("recipeData.txt", "r")
-local masterRecipeList = textutils.unserialise(file.readAll())
+local rdText = file.readAll()
+local masterRecipeList = textutils.unserialise(rdText)
 file.close()
 table.insert(masterRecipeList, finalRecipeTable)
 local file = fs.open("recipeData.txt", "w")
