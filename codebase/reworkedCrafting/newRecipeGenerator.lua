@@ -159,3 +159,56 @@ while batchSize == 0 do
 	end
 end
 
+--Priority/override stuff.
+local priority = 0
+while priority == 0 do
+	print("Input a number to give this recipe a")
+	print("priority that overrides another recipe.")
+	print("Or input some text (or nothing) to")
+	print("skip over this bit entirely.")
+	local input = io.read()
+	local inputNum = tonumber(input)
+	if inputNum == nil then
+		print("Skipping over this section...")
+		priority = "nope"
+	else
+		inputNum = math.floor(inputNum)
+		if inputNum > 0.5 then
+			print(inputNum)
+			print("Are you sure? Y for Yes, otherwise No")
+			local input2 = string.lower(io.read())
+			if input2 == "y" then
+				priority = inputNum
+			end
+		else
+			print("This number is too small!")
+		end
+	end
+end
+if priority = "nope" then
+	priority = nil
+end
+
+--TODO:
+--Implement recipe map ignored results
+--(Index 6).
+
+--Now make the final recipe data table
+--and save it to disk.
+print("The recipe has been defined!")
+print("Saving it to the file now...")
+
+local finalRecipeTable = {}
+finalRecipeTable[1] = recipeOutputs
+finalRecipeTable[2] = recipeInputs
+finalRecipeTable[3] = batchSize
+finalRecipeTable[4] = recipeType
+finalRecipeTable[5] = priority
+
+local file = fs.open("recipeData.txt", "r")
+local masterRecipeList = textutils.unserialise(file)
+file.close()
+table.insert(masterRecipeList, finalRecipeTable)
+local file = fs.open("recipeData.txt", "w")
+file.write(textutils.serialise(masterRecipeList, {compact = compactedFiles}))
+file.close()
