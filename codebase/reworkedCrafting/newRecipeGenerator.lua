@@ -44,6 +44,10 @@ local ctFile = fs.open("craftingTypes.txt", "r")
 craftingTypeTable = textutils.unserialise(ctFile.readAll())
 ctFile = nil
 
+for key, value in pairs(craftingTypeTable) do
+	print(key)
+end
+
 local recipeTable = {}
 --Ensures that recipeData.txt exists.
 if not fs.exists("recipeData.txt") then
@@ -65,8 +69,9 @@ while recipeType == "doesn't exist, please don't use this as a recipe type you-"
 		i = i + 1
 	end
 	i = nil
+	local message = table.concat(prompt, "\n")
 	local width, height = term.getCursorPos()
-	textutils.pagedPrint(prompt, height - 4)
+	textutils.pagedPrint(message, height - 4)
 	
 	local input = io.read()
 	if craftingTypeTable[input] == nil then
@@ -160,6 +165,8 @@ while batchSize == 0 do
 end
 
 --Priority/override stuff.
+term.clear()
+term.setCursorPos(1,1)
 local priority = 0
 while priority == 0 do
 	print("Input a number to give this recipe a")
