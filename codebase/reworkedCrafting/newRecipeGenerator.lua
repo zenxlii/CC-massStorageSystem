@@ -144,7 +144,7 @@ while batchSize == 0 do
 	local inputNum = tonumber(input)
 	if inputNum ~= nil then
 		inputNum = math.floor(inputNum)
-		if inputNum > 0 then
+		if inputNum > 0.5 then
 			print(inputNum)
 			print("Are you sure? Y for Yes, otherwise No")
 			local input2 = string.lower(io.read())
