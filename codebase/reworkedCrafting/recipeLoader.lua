@@ -55,7 +55,7 @@ if not fs.exists("resourcePools.txt") then
 	rp[2][2][1] = {{{"minecraft:iron_ingot"}},{{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,nil,nil,nil,nil},64,"craftingTable"}
 	rp[2][2][2] = {{{"minecraft:iron_nugget",9}},{{"minecraft:iron_ingot"}},64,"craftingTable"}
 	resourcePoolTable["iron"] = rp
-	file.write(textutils.serialise(resourcePoolTable, {compact=compactedFiles}))
+	file.write(textutils.serialise(resourcePoolTable, {compact = compactedFiles}))
 	file.close()
 	resourcePoolTable = {}
 end
