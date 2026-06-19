@@ -104,4 +104,21 @@ New recipe types, however, will need to
 be implemented as functions in code for
 the time being.
 
+~~~~Resource Pools:
+A number of common resources (such as
+Iron or Redstone) have multiple item
+forms with differing levels of material
+density (e.g. 1 Iron Block = 9 Iron
+Ingots = 81 Iron Nuggets), and these
+can be defined as a resource pool that
+can be drawn from and added to as if
+all of these forms were the same item,
+while MSS condenses them into higher-
+density forms in the background and
+decondenses them as needed to satisfy
+requests and the likes.
+
+~~~~Resource Pool Format (table):
+
+
 ~~~~Implementation Specifics:

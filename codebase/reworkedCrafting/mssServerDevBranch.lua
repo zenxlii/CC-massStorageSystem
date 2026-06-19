@@ -1209,6 +1209,8 @@ local function findCondense()
 	end
 end
 
+--New Condensing Logic
+
 local earlyScanTypes = {}
 earlyScanTypes["output"] = true
 earlyScanTypes["export"] = true
