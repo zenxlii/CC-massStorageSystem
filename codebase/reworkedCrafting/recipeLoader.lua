@@ -30,7 +30,7 @@ if not fs.exists("recipeData.txt") then
 	local file = fs.open("recipeData.txt", "w")
 	local rd = {}
 	rd[1] = {{"minecraft:torch",4}}
-	rd[2] = {{"minecraft:charcoal",1},nil,nil,nil,{"minecraft:stick",1},nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil}
+	rd[2] = {{"minecraft:charcoal"},nil,nil,nil,{"minecraft:stick"},nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil}
 	rd[3] = 64
 	rd[4] = "craftingTable"
 	masterRecipeTable[1] = rd
@@ -46,10 +46,10 @@ if not fs.exists("resourcePools.txt") then
 	local file = fs.open("resourcePools.txt", "w")
 	local rp = {}
 	rp["iron"] = {}
-	rp["iron"][1] = {{"minecraft:iron_nugget",1},{"minecraft:iron_ingot",9},{"minecraft:iron_block",81
+	rp["iron"][1] = {{"minecraft:iron_nugget",1},{"minecraft:iron_ingot",9},{"minecraft:iron_block",81}}
 	rp["iron"][2] = {}
-	rp["iron"][2][1] = {{{"minecraft:iron_block",1}},{{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,nil,nil,nil,nil},64,"craftingTable"}
-	rp["iron"][2][2] = {{{"minecraft:iron_ingot",9}},{{"minecraft:iron_block",1}}}
+	rp["iron"][2][1] = {{{"minecraft:iron_block"}},{{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,nil,nil,nil,nil},64,"craftingTable"}
+	rp["iron"][2][2] = {{{"minecraft:iron_ingot",9}},{{"minecraft:iron_block"}}}
 end
 
 --Load the contents of recipeData.txt
@@ -79,10 +79,24 @@ local recipeMap = {}
 --Add in all the other recipes.
 for i, recipe in ipairs(masterRecipeTable) do
 	local priority = 0
+	--If there is no quantity next to
+	--an ingredient or result, set it
+	--to 1.
+	for j, resultData in pairs(recipe[1]) do
+		if resultData[2] == nil then
+			masterRecipeTable[i][1][j][2] = 1
+		end
+	end
+	for j, ingredientData in pairs(recipe[2]) do
+		if ingredientData[2] == nil then
+			masterRecipeTable[i][2][j][2] = 1
+		end
+	end
+	--Assign priority if relevant.
 	if recipe[5] ~= nil then
 		priority = recipe[5]
 	end
-	for _, item in ipairs(recipe[1]) do
+	for _, item in pairs(recipe[1]) do
 		if recipe[5] == nil then
 			if recipeMap[item[1]] == nil then
 				recipeMap[item[1]] = {}
