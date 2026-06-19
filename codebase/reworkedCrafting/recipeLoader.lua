@@ -45,15 +45,19 @@ local resourcePoolTable = {}
 if not fs.exists("resourcePools.txt") then
 	local file = fs.open("resourcePools.txt", "w")
 	local rp = {}
-	rp["iron"] = {}
-	rp["iron"][1] = {{"minecraft:iron_nugget",1},{"minecraft:iron_ingot",9},{"minecraft:iron_block",81}}
-	rp["iron"][2] = {}
-	rp["iron"][2][1] = {}
-	rp["iron"][2][1][1] = {{{"minecraft:iron_block"}},{{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,nil,nil,nil,nil},64,"craftingTable"}
-	rp["iron"][2][1][2] = {{{"minecraft:iron_ingot",9}},{{"minecraft:iron_block"}},64,"craftingTable"}
-	rp["iron"][2][2] = {}
-	rp["iron"][2][2][1] = {{{"minecraft:iron_ingot"}},{{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,nil,nil,nil,nil},64,"craftingTable"}
-	rp["iron"][2][2][2] = {{{"minecraft:iron_nugget",9}},{{"minecraft:iron_ingot"}},64,"craftingTable"}
+	rp = {}
+	rp[1] = {{"minecraft:iron_nugget",1},{"minecraft:iron_ingot",9},{"minecraft:iron_block",81}}
+	rp[2] = {}
+	rp[2][1] = {}
+	rp[2][1][1] = {{{"minecraft:iron_block"}},{{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},{"minecraft:iron_ingot"},nil,nil,nil,nil,nil},64,"craftingTable"}
+	rp[2][1][2] = {{{"minecraft:iron_ingot",9}},{{"minecraft:iron_block"}},64,"craftingTable"}
+	rp[2][2] = {}
+	rp[2][2][1] = {{{"minecraft:iron_ingot"}},{{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},{"minecraft:iron_nugget"},nil,nil,nil,nil,nil},64,"craftingTable"}
+	rp[2][2][2] = {{{"minecraft:iron_nugget",9}},{{"minecraft:iron_ingot"}},64,"craftingTable"}
+	resourcePoolTable["iron"] = rp
+	file.write(textutils.serialise(resourcePoolTable, {compact=compactedFiles}))
+	file.close()
+	resourcePoolTable = {}
 end
 
 --Load the contents of recipeData.txt
@@ -62,6 +66,13 @@ local rdFile = fs.open("recipeData.txt", "r")
 masterRecipeTable = textutils.unserialise(rdFile.readAll())
 rdFile.close()
 rdFile = nil
+
+--Load the contents of
+--resourcePools.txt into a table.
+local rpFile = fs.open("resourcePools.txt", "r")
+resourcePoolTable = textutils.unserialise(rpFile.readAll())
+rpFile.close()
+rpFile = nil
 
 local function makeSlotBasedRecipe(recipeDataTable)
 	return "bruh"
@@ -153,5 +164,6 @@ end
 return{
 craftingTypeTable = craftingTypeTable,
 masterRecipeTable = masterRecipeTable,
-recipeMap = recipeMap
+recipeMap = recipeMap,
+resourcePoolTable = resourcePoolTable
 }
