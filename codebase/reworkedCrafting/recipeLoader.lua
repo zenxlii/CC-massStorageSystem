@@ -90,8 +90,6 @@ end
 --to the encoded names of their
 --output(-s).
 local recipeMap = {}
-
---Add in all the other recipes.
 for i, recipe in ipairs(masterRecipeTable) do
 	local priority = 0
 	--If there is no quantity next to
@@ -160,6 +158,9 @@ for i, recipe in ipairs(masterRecipeTable) do
 		end
 	end
 end
+--Note that resource pool recipes are
+--not added to the masterRecipeTable,
+--this is by design.
 
 return{
 craftingTypeTable = craftingTypeTable,
