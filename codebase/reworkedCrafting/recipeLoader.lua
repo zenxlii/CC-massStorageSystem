@@ -24,8 +24,8 @@ ctFile.close()
 ctFile = nil
 
 local masterRecipeTable = {}
---Makes recipeData.txt if it does
---not exist and initialises it.
+--Makes recipeData.txt if it does not
+--exist and initialises it.
 if not fs.exists("recipeData.txt") then
 	local file = fs.open("recipeData.txt", "w")
 	local rd = {}
@@ -37,6 +37,19 @@ if not fs.exists("recipeData.txt") then
 	file.write(textutils.serialise(masterRecipeTable, {compact = compactedFiles}))
 	file.close()
 	masterRecipeTable = {}
+end
+
+local resourcePoolTable = {}
+--Makes resourcePools.txt if it does
+--not exist and initialises it.
+if not fs.exists("resourcePools.txt") then
+	local file = fs.open("resourcePools.txt", "w")
+	local rp = {}
+	rp["iron"] = {}
+	rp["iron"][1] = {{"minecraft:iron_nugget",1},{"minecraft:iron_ingot",9},{"minecraft:iron_block",81
+	rp["iron"][2] = {}
+	rp["iron"][2][1] = {{{"minecraft:iron_block",1}},{{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},{"minecraft:iron_ingot",1},nil,nil,nil,nil,nil},64,"craftingTable"}
+	rp["iron"][2][2] = {{{"minecraft:iron_ingot",9}},{{"minecraft:iron_block",1}}}
 end
 
 --Load the contents of recipeData.txt
@@ -62,6 +75,8 @@ end
 --to the encoded names of their
 --output(-s).
 local recipeMap = {}
+
+--Add in all the other recipes.
 for i, recipe in ipairs(masterRecipeTable) do
 	local priority = 0
 	if recipe[5] ~= nil then

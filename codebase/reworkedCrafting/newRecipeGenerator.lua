@@ -51,6 +51,7 @@ if not fs.exists("recipeData.txt") then
 	file.close()
 end
 
+--Ask the user for a crafting type.
 local recipeType = "doesn't exist, please don't use this as a recipe type you-"
 if craftingTypeTable[recipeType] ~= nil then
 	error("WHY IS THIS EVEN A CRAFTING TYPE?!?!?")
@@ -83,6 +84,9 @@ while recipeType == "doesn't exist, please don't use this as a recipe type you-"
 		end
 	end
 end
+--Specifically to prevent messing the
+--recipe up by mashing Enter too fast.
+os.sleep(0.5)
 
 --This program can only create recipes
 --with at most 9 input slots and 7
@@ -133,6 +137,7 @@ for slot, item in pairs(recipeItemBuffer) do
 		recipeInputs[slotOrder[slot]] = {eName, amount}
 	end
 end
+os.sleep(0.5)
 
 --Set the maximum batch size.
 term.clear()
@@ -159,6 +164,7 @@ while batchSize == 0 do
 		print("That was not a number!")
 	end
 end
+os.sleep(0.5)
 
 --Priority/override stuff.
 term.clear()
@@ -191,6 +197,7 @@ end
 if priority == "nope" then
 	priority = nil
 end
+os.sleep(0.5)
 
 --TODO:
 --Implement recipe map ignored results
