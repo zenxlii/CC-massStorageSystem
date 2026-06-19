@@ -6,6 +6,8 @@ contains the item's encoded name with
 no shorthands allowed, followed by how
 many of said item are produced by the
 recipe.
+If no number is supplied, it is implied
+to be 1.
 
 Index 2 stores a table containing the
 recipe's inputs or ingredients.
@@ -20,6 +22,8 @@ they are intended for, or the inventory
 reference ID for the crafting type,
 depending on the crafting type.
 (craftingTable is slot-based).
+If no number is supplied, it is implied
+to be 1.
 
 Index 3 is the maximum batch size for
 this recipe.
