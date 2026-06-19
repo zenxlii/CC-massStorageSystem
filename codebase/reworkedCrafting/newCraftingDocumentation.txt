@@ -136,6 +136,15 @@ will be the number of least-dense-form
 item copies this particular item is
 equivalent to).
 
-Index 2 
+Index 2 is an array of recipe
+definition pairs which link two items
+in the pool together. You will need to
+ensure that every item in the pool can
+reach every other item in the pool when
+factoring in the other recipes listed
+in here (e.g. Iron Block <> Iron Ingot
+and Iron Ingot <> Iron Nugget would be
+sufficient for a pool of Iron Block,
+Iron Ingot and Iron Nugget).
 
 ~~~~Implementation Specifics:
