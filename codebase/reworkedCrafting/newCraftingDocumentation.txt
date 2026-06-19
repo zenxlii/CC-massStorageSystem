@@ -119,6 +119,23 @@ decondenses them as needed to satisfy
 requests and the likes.
 
 ~~~~Resource Pool Format (table):
+The master table is indexed by user-
+supplied names for the to-be-pooled
+resources.
 
+Each pool's table is formatted as
+follows:
+
+Index 1 is an array of arrays that
+contain:
+>The encoded name of the to-be-pooled
+item.
+>The value of this item in terms of
+raw pool resource units (usually this
+will be the number of least-dense-form
+item copies this particular item is
+equivalent to).
+
+Index 2 
 
 ~~~~Implementation Specifics:
