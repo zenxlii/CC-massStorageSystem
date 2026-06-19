@@ -21,7 +21,7 @@ end
 local ctFile = fs.open("craftingTypes.txt", "r")
 craftingTypeTable = textutils.unserialise(ctFile.readAll())
 ctFile.close()
-ctFile = nil
+--ctFile = nil
 
 local masterRecipeTable = {}
 --Makes recipeData.txt if it does not
@@ -65,14 +65,14 @@ end
 local rdFile = fs.open("recipeData.txt", "r")
 masterRecipeTable = textutils.unserialise(rdFile.readAll())
 rdFile.close()
-rdFile = nil
+--rdFile = nil
 
 --Load the contents of
 --resourcePools.txt into a table.
 local rpFile = fs.open("resourcePools.txt", "r")
 resourcePoolTable = textutils.unserialise(rpFile.readAll())
 rpFile.close()
-rpFile = nil
+--rpFile = nil
 
 local function makeSlotBasedRecipe(recipeDataTable)
 	return "bruh"
@@ -90,7 +90,7 @@ end
 --to the encoded names of their
 --output(-s).
 local recipeMap = {}
-for i, recipe in ipairs(masterRecipeTable) do
+for i, recipe in pairs(masterRecipeTable) do
 	local priority = 0
 	--If there is no quantity next to
 	--an ingredient or result, set it
@@ -121,7 +121,8 @@ for i, recipe in ipairs(masterRecipeTable) do
 				recipeMap[item[1]] = {}
 			end
 			if recipeMap[item[1]][priority] == nil then
-				recipeMap[item[1][priority] = i
+				--recipeMap[item[1][priority] = i
+				table.insert(recipeMap[item[1]], i)
 			else
 				if recipe[5] then
 					recipeMap[item[1]][priority] = i
@@ -142,7 +143,8 @@ for i, recipe in ipairs(masterRecipeTable) do
 					recipeMap[item[1]] = {}
 				end
 				if recipeMap[item[1]][priority] == nil then
-					recipeMap[item[1][priority] = i
+					--recipeMap[item[1][priority] = i
+					table.insert(recipeMap[item[1]], i)
 				else
 					if recipe[5] then
 						recipeMap[item[1]][priority] = i
