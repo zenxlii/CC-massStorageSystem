@@ -2,11 +2,12 @@
 local config = require("configFiles.config")
 --local rll = require("recipeListLoader")
 local mssU = require(config.commonCodeDisk..".mssUtils")
-local condList = require(config.commonCodeDisk..".configFiles.condenseList")
+--local condList = require(config.commonCodeDisk..".configFiles.condenseList")
 local storeList = require("configFiles.storageList")
 local bussin = require("configFiles.bussin")
 
-local rla = require("recipeListAssembler")
+--local rla = require("recipeListAssembler")
+local rl = require("recipeLoader")
 
 --Constants
 local batchSize = config.batchSize
@@ -31,9 +32,13 @@ local modemSide = config.modemSide
 rednet.open(modemSide)
 
 --local recipeList = rll.recipeList
-local recipeList = rla.masterRecipeList
+--local recipeList = rla.masterRecipeList
+local recipeTable = rl.masterRecipeTable
+local craftingTypeTable = rl.craftingTypeTable
+local recipeMap = rl.recipeMap
+local resourcePoolTable = rl.resourcePoolTable
 
-local condenseTable = condList.condenseTable
+--local condenseTable = condList.condenseTable
 
 --Manifest Stuff
 
@@ -1000,17 +1005,42 @@ local function craftTask(taskTable)
 	local eName = taskTable.eName
 	local amount = taskTable.amount
 	local amountLeft = amount
-	local recipe = recipeList[eName]
+	--local recipe = recipeList[eName]
+	
+	--Deletes invalid craft tasks.
+	if recipeMap[eName] = nil then
+		print("No recipe exists for "..eName.."!")
+		return 0
+	end
+	--Hard-coded temporary measure,
+	--does not support multiple recipes
+	--per item.
+	local recipe = masterRecipeTable[recipeMap[eName][1]]
+	local cType = craftingTypeTable[recipe[4]]
 	--Deletes invalid craft tasks.
 	if not recipe then
 		print("No recipe exists for "..eName.."!")
 		return 0
 	end
+	
+	local wantedOutput = 0
+	for i, outputData in pairs(recipe[1]) do
+		if outputData[1] == eName then
+			wantedOutput = i
+			break
+		end
+	end
+	
+	if wantedOutput == 0 then
+		print("The recipe is broken!")
+		return 0
+	end
+	
 	--Determine if we can make a craft
 	--of this item happen with what is
 	--currently in the system.
-	local maxCraft = maxCanCraft(recipe[3], recipe[2])
-	local craftsToDo = math.ceil(amountLeft/recipe[1])
+	local maxCraft = maxCanCraft(recipe[2], recipe[3])
+	local craftsToDo = math.ceil(amountLeft/recipe[1][wantedOutput][2])
 	maxCraft = math.min(maxCraft, craftsToDo)
 	if maxCraft == 0 then
 		return amountLeft
@@ -1028,11 +1058,14 @@ local function craftTask(taskTable)
 		--Since we know for sure that
 		--we can craft by now, do the
 		--movement stuffs.
-		for slot, iData in pairs(recipe[3]) do
+		for slot, iData in pairs(recipe[2]) do
 			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
 		end
 		dumpInventory()
 	elseif recipe[4] == "infiniteRetrieve" then
+		--TODO: Update this to the new
+		--crafting data formats.
+		error("Attempted to use an unfinished craftingType of infiniteRetrieve!")
 		local pullInv = recipe[5][1]
 		local pullSlot = recipe[5][2]
 		if pullSlot ~= 0 then
@@ -1053,7 +1086,7 @@ local function craftTask(taskTable)
 		--there's enough space in the
 		--target inventories to make a
 		--craft happen at all.
-		for target, _ in pairs(recipe[3]) do
+		for target, _ in pairs(cType[3]) do
 			local targetState = scanReturns[target]
 			local hasSpace = false
 			for slotNum, state in pairs(targetState) do
@@ -1068,11 +1101,11 @@ local function craftTask(taskTable)
 		end
 		--If we get here, we know we
 		--have space.
-		for inv, iData in pairs(recipe[3]) do
-			dumbPushSpreader(inv, iData[1], iData[2] * maxCraft)
+		for ingIndex, iData in pairs(recipe[2]) do
+			dumbPushSpreader(cType[3][ingIndex], iData[1], iData[2] * maxCraft)
 		end
 	end
-	amountLeft = amountLeft - recipe[1] * maxCraft
+	amountLeft = amountLeft - recipe[1][wantedOutput][2] * maxCraft
 	return amountLeft
 end
 
