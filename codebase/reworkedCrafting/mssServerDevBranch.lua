@@ -46,6 +46,10 @@ local resourcePoolTable = rl.resourcePoolTable
 --every item in the storage system.
 local manifest = {}
 
+--Tracks how much "stuff" is in each
+--resource pool, for easy referencing.
+local resourcePools = {}
+
 --Nested table of booleans which
 --corresponds to if a given slot in the
 --storage system has anything in there.
@@ -1168,6 +1172,19 @@ end
 
 --Calls combineStacks() on all items in
 --the system.
+
+--TODO:
+--Add a flag that states and tracks if
+--a given eName might benefit from
+--combining, so that the ones that
+--don't can be skipped over to reduce
+--each main loop iteration's execution
+--time.
+--This flag needs to be in the "check"
+--after any change happens to a given
+--eName, and set to "uncheck" once no
+--combining is needed when it is
+--checked.
 local function massCombine()
 	for eName, _ in pairs(manifest) do
 		combineStacks(eName)
@@ -1242,7 +1259,9 @@ local function findCondense()
 	end
 end
 
---New Condensing Logic
+--Resource Pool Handling
+--(replaces condensing logic)
+
 
 local earlyScanTypes = {}
 earlyScanTypes["output"] = true
