@@ -72,7 +72,30 @@ rdFile.close()
 local rpFile = fs.open("resourcePools.txt", "r")
 resourcePoolTable = textutils.unserialise(rpFile.readAll())
 rpFile.close()
+--Add in the implicit stuff to resource
+--pool conversion recipes, because that
+--is a thing for other recipes.
+for poolName, contents in pairs(resourcePoolTable) do
+	for i, recipePair in ipairs(contents[2]) do
+		for j, recipe in ipairs(recipePair) do
+			for k, itemData in pairs(recipe[1]) do
+				if not itemData[2] then
+					table.insert(itemData,1)
+				end
+			end
+			for k, itemData in pairs(recipe[2]) do
+				if not itemData[2] then
+					table.insert(itemData,1)
+				end
+			end
+		end
+	end
+end
 --rpFile = nil
+
+local testFile = fs.open("testFile.txt", "w")
+testFile.write(textutils.serialise(resourcePoolTable))
+testFile.close()
 
 local function makeSlotBasedRecipe(recipeDataTable)
 	return "bruh"

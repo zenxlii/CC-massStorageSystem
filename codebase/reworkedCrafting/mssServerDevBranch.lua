@@ -1264,8 +1264,77 @@ end
 
 --Attempts to condense up from one item
 --in a pool to another.
-local function attemptCondense()
-	
+--Is basically a cut-down version of
+--craftTask() that doesn't use the
+--masterRecipeTable or recipeMap.
+--Probably could be optimised more.
+local function attemptCondense(condensingRecipe)
+	--local recipe = masterRecipeTable[recipeMap[eName][1]]
+	local cType = craftingTypeTable[condensingRecipe[4]]
+	local maxCraft = maxCanCraft(condensingRecipe[2], condensingRecipe[3])
+	--The wahtedOutput should always be
+	--the first output item, and we
+	--always want to condense as much
+	--as possible.
+	local craftsToDo = condensingRecipe[1][1][2]
+	maxCraft = math.min(maxCraft, craftsToDo)
+	if condensingRecipe[4] == "craftingTable" then
+		--Only attempt to craft this
+		--type of recipe when no other
+		--recipes of this type have
+		--been allocated for this
+		--iteration.
+		local hasCraft = addCraftErrand()
+		if hasCraft == true then
+			return
+		end
+		--Since we know for sure that
+		--we can craft by now, do the
+		--movement stuffs.
+		for slot, iData in pairs(condensingRecipe[2]) do
+			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
+		end
+		dumpInventory()
+	else
+		error(condensingRecipe[1][1][1].." has a resource pool recipe that isn't of type craftingTable!")
+	end
+	--TODO:
+	--Add support for non-craftingTable
+	--recipes within resource pools.
+end
+
+--Checks every condensing recipe for
+--every resource pool to see if it can
+--be done, and if it finds one to do,
+--it will attempt to condense up.
+local function resourcePoolCondenser()
+	if shouldCraft then
+		return
+	end
+	for _, poolData in pairs(resourcePoolTable) do
+		local recipePairs = poolData[2]
+		for i, recipePair in ipairs(recipePairs) do
+			local inputItem = ""
+			local inputAmount = 0
+			for j, ingredient in pairs(recipePair[1][2]) do
+				inputItem = ingredient[1]
+				inputAmount = inputAmount + ingredient[2]
+			end
+			if ensureItem(inputItem, inputAmount) then
+				--In here, we know that
+				--we have a condensing
+				--recipe that we can
+				--try to do.
+				attemptCondense(recipePair[1])
+				--Could run multiple
+				--operations in one
+				--main loop iteration,
+				--but that's for
+				--another day.
+				return
+			end
+		end
+	end
 end
 
 local earlyScanTypes = {}
