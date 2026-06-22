@@ -153,5 +153,13 @@ Iron Ingot and Iron Nugget).
 It is expected that the condensing
 recipe is in index 1 and that the
 decondensing recipe is in index 2.
+The order of recipe pairs within the
+pool recipe definitions table, however,
+have no strict requirements, but it is
+optimal to have the lower-value pairs
+come first as to reduce how many
+mssServer main loop iterations need to
+happen before the maximally condensed
+state is reached.
 
 ~~~~Implementation Specifics:

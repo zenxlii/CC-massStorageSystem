@@ -1265,7 +1265,7 @@ end
 --Attempts to condense up from one item
 --in a pool to another.
 local function attemptCondense()
-
+	
 end
 
 local earlyScanTypes = {}
