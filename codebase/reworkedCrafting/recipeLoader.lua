@@ -121,7 +121,6 @@ for i, recipe in pairs(masterRecipeTable) do
 				recipeMap[item[1]] = {}
 			end
 			if recipeMap[item[1]][priority] == nil then
-				--recipeMap[item[1][priority] = i
 				table.insert(recipeMap[item[1]], i)
 			else
 				if recipe[5] then
@@ -143,7 +142,6 @@ for i, recipe in pairs(masterRecipeTable) do
 					recipeMap[item[1]] = {}
 				end
 				if recipeMap[item[1]][priority] == nil then
-					--recipeMap[item[1][priority] = i
 					table.insert(recipeMap[item[1]], i)
 				else
 					if recipe[5] then

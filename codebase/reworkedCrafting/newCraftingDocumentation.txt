@@ -150,5 +150,8 @@ in here (e.g. Iron Block <> Iron Ingot
 and Iron Ingot <> Iron Nugget would be
 sufficient for a pool of Iron Block,
 Iron Ingot and Iron Nugget).
+It is expected that the condensing
+recipe is in index 1 and that the
+decondensing recipe is in index 2.
 
 ~~~~Implementation Specifics:
