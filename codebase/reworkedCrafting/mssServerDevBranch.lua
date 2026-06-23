@@ -1797,8 +1797,6 @@ local function readRequest(fileName)
 	local sender = rednet.lookup("mssClient", fileName)
 	--Checks to see if we can satisfy
 	--the request.
-	--Currently does not factor in the
-	--ppssibility of crafting stuff.
 	if manifest[requestData["item"]] then
 		if ensureItem(requestData["item"], requestData["amount"]) then
 			freeToReserved(requestData["item"], requestData["amount"])
