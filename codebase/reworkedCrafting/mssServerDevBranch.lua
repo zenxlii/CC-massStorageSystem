@@ -57,6 +57,14 @@ local resourcePools = {}
 --Is false if the slot isn't empty.
 local emptySlotsTable = {}
 
+--Saves a separate manifest file for
+--all of the resource pools, so that
+--client turtles can read it more
+--easily.
+local function saveResourcePoolManifest()
+	
+end
+
 --Constructs a cut-down copy of the
 --manifest, serialises it and then
 --saves it to a file on a floppy disk.
@@ -219,7 +227,50 @@ local function addDetailsToManifest(invName, slotNum)
 	manifest[eName]["maxStack"] = itemDetails.maxCount
 end
 
+--Establishes every resource pool that
+--is defined in resourcePools.txt.
+local function initialiseResourcePoolManifest()
+	for resource, info in pairs(resourcePoolTable) do
+		resourcePools[resource] = 0
+	end
+end
 
+--Updates each resource pool's total
+--based on how much of each constituent
+--item is in the system.
+local function updateResourcePoolManifest()
+	for resource, info in pairs(resourcePoolTable) do
+		resourcePools[resource] = 0
+		for _, data in ipairs(info[1]) do
+			resourcePools[resource] = resoursePools[resource] + manifest[data[1]]["free"] * data[2]
+		end
+	end
+end
+
+--Updates a single resource pool's
+--total using a resource pool's name.
+local function updateResourcePoolSingle(resource)
+	resourcePools[resource] = 0
+	for _, data in ipairs(resourcePoolTable[resource][1]) do
+		resourcePools[resource] = resoursePools[resource] + manifest[data[1]]["free"] * data[2]
+	end
+end
+
+--Updates a single resource pool's
+--total using an item's encoded name.
+--Silently does nothing if the item is
+--not part of a resource pool.
+local function updateResourcePoolSingleAlt(eName)
+	for rpName, rpData in pairs(resourcePoolTable) do
+		local rpContents = rpData[1]
+		for _, iName in ipairs(rpContents) do
+			if iName[1] == eName then
+				updateResourcePoolSingle(rpName)
+				return
+			end
+		end
+	end
+end
 
 --Replaces the current "totals" fields
 --for the given item name with ones
@@ -302,6 +353,10 @@ local function initialiseManifest()
 			end
 		end
 	end
+	--Set up the resource pool manifest
+	--stuff.
+	initialiseResourcePoolManifest()
+	updateResourcePoolManifest()
 	--Finally, update the display
 	--manifest for the clients to use.
 	saveDisplayManifest()
@@ -430,6 +485,7 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 		--If nothing is pending-...
 		manifest[eName]["free"] = manifest[eName]["free"] + addition
 		manifest[eName]["total"] = manifest[eName]["total"] + addition
+		updateResourcePoolSingleAlt(eName)
 	elseif manifest[eName]["pending"] < addition then
 		--If only part of this stack is
 		--pending-...
@@ -437,6 +493,7 @@ local function addItems(eName, allInvsID, slot, addition, scanInv, scanSlot)
 		manifest[eName]["reserved"] = manifest[eName]["reserved"] + manifest[eName]["pending"]
 		manifest[eName]["pending"] = 0
 		manifest[eName]["total"] = manifest[eName]["total"] + addition
+		updateResourcePoolSingleAlt(eName)
 	else
 		--If the entire stack is
 		--pending-...
@@ -456,6 +513,7 @@ local function freeToReserved(eName, amount)
 	if ensureItem(eName, amount) then
 		manifest[eName]["free"] = manifest[eName]["free"] - amount
 		manifest[eName]["reserved"] = manifest[eName]["reserved"] + amount
+		updateResourcePoolSingleAlt(eName)
 		return true
 	else
 		return false
@@ -1268,16 +1326,21 @@ end
 --craftTask() that doesn't use the
 --masterRecipeTable or recipeMap.
 --Probably could be optimised more.
-local function attemptCondense(condensingRecipe)
+local function attemptCondense(condensingRecipe, inputItem, inputAmount)
 	--local recipe = masterRecipeTable[recipeMap[eName][1]]
 	local cType = craftingTypeTable[condensingRecipe[4]]
-	local maxCraft = maxCanCraft(condensingRecipe[2], condensingRecipe[3])
-	--The wahtedOutput should always be
-	--the first output item, and we
-	--always want to condense as much
-	--as possible.
-	local craftsToDo = condensingRecipe[1][1][2]
-	maxCraft = math.min(maxCraft, craftsToDo)
+	--local maxCraft = maxCanCraft(condensingRecipe[2], condensingRecipe[3])
+	local maxCraft = math.min(math.floor(manifest[inputItem]["free"]/inputAmount), condensingRecipe[3])
+	
+	--This should never be 0, but a
+	--check is here just in case.
+	if maxCraft == 0 then
+		return
+	end
+	
+	
+	--local craftsToDo = condensingRecipe[1][1][2]
+	--maxCraft = math.min(maxCraft, craftsToDo)
 	if condensingRecipe[4] == "craftingTable" then
 		--Only attempt to craft this
 		--type of recipe when no other
@@ -1288,11 +1351,15 @@ local function attemptCondense(condensingRecipe)
 		if hasCraft == true then
 			return
 		end
+		local canDo = freeToReserved(inputItem, maxCraft * inputAmount)
+		if canDo == false then
+			return
+		end
 		--Since we know for sure that
 		--we can craft by now, do the
 		--movement stuffs.
 		for slot, iData in pairs(condensingRecipe[2]) do
-			fixedPushSpreader(self, slot, iData[1], iData[2] * maxCraft)
+			fixedPushSpreader(self, slot, inputItem, iData[2] * maxCraft)
 		end
 		dumpInventory()
 	else
@@ -1325,7 +1392,7 @@ local function resourcePoolCondenser()
 				--we have a condensing
 				--recipe that we can
 				--try to do.
-				attemptCondense(recipePair[1])
+				attemptCondense(recipePair[1], inputItem, inputAmount)
 				--Could run multiple
 				--operations in one
 				--main loop iteration,
@@ -1840,6 +1907,11 @@ while true do
 	mssU.batchedParallel(scanErrands)
 	postScanWork()
 	interpretTaskList()
+	--Alternates between combining and
+	--condensing with each iteration,
+	--because doing both in the same
+	--iteration causes the manifest to
+	--desynchronise from reality.
 	if flipper then
 		massCombine()
 		flipper = false
