@@ -76,7 +76,8 @@ local function saveDisplayManifest()
 	--Also compacts the table keys.
 	for eName, data in pairs(manifest) do
 		displayManifest[eName] = {}
-		displayManifest[eName]["a"] = data["free"]
+		displayManifest[eName]["f"] = data["free"]
+		displayManifest[eName]["i"] = data["incoming"]
 		displayManifest[eName]["n"] = data["displayName"]
 		--Only adds the maxStack if it
 		--isn't 64, as we assume it is
@@ -141,7 +142,8 @@ local function loadDataFromDM()
 	--Add the missing maxStack and
 	--hasRecipe values back in.
 	for eName, data in pairs(outData) do
-		data["amount"] = data["a"]
+		data["free"] = data["f"]
+		data["incoming"] = data["i"]
 		data["displayName"] = data["n"]
 		if data["s"] == nil then
 			data["maxStack"] = 64
@@ -186,6 +188,9 @@ local function loadDetailsFromDM()
 		if not manifest[eName]["pending"] then
 			manifest[eName]["pending"] = 0
 		end
+		if not manifest[eName]["incoming"] then
+			manifest[eName]["incoming"] = 0
+		end
 		manifest[eName]["displayName"] = data["displayName"]
 		manifest[eName]["maxStack"] = data["maxStack"]
 	end
@@ -223,6 +228,9 @@ local function addDetailsToManifest(invName, slotNum)
 	if not manifest[eName]["pending"] then
 		manifest[eName]["pending"] = 0
 	end
+	if not manifest[eName]["incoming"] then
+		manifest[eName]["incoming"] = 0
+	end
 	manifest[eName]["displayName"] = itemDetails.displayName
 	manifest[eName]["maxStack"] = itemDetails.maxCount
 end
@@ -242,7 +250,7 @@ local function updateResourcePoolManifest()
 	for resource, info in pairs(resourcePoolTable) do
 		resourcePools[resource] = 0
 		for _, data in ipairs(info[1]) do
-			resourcePools[resource] = resoursePools[resource] + manifest[data[1]]["free"] * data[2]
+			resourcePools[resource] = resoursePools[resource] + (manifest[data[1]]["free"] + manifest[data[1]]["incoming"]) * data[2]
 		end
 	end
 end
@@ -252,7 +260,7 @@ end
 local function updateResourcePoolSingle(resource)
 	resourcePools[resource] = 0
 	for _, data in ipairs(resourcePoolTable[resource][1]) do
-		resourcePools[resource] = resoursePools[resource] + manifest[data[1]]["free"] * data[2]
+		resourcePools[resource] = resoursePools[resource] + (manifest[data[1]]["free"] + manifest[data[1]]["incoming"]) * data[2]
 	end
 end
 
@@ -338,6 +346,7 @@ local function initialiseManifest()
 		manifest[eName]["free"] = manifest[eName]["total"]
 		manifest[eName]["reserved"] = 0
 		manifest[eName]["pending"] = 0
+		manifest[eName]["incoming"] = 0
 	end
 	--Go through and identify which
 	--slots are filled and which are
@@ -357,6 +366,13 @@ local function initialiseManifest()
 	--stuff.
 	initialiseResourcePoolManifest()
 	updateResourcePoolManifest()
+	--TODO:
+	--Make a special handler for
+	--initialising storage that cannot
+	--be scanned (e.g. Tech Reborn's
+	--Storage Unit or non-native fluid
+	--support).
+	
 	--Finally, update the display
 	--manifest for the clients to use.
 	saveDisplayManifest()
