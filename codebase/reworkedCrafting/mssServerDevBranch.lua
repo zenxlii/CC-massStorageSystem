@@ -1769,7 +1769,28 @@ local function evaluateCraftRequest(desiredItem, desiredAmount)
 	return true
 end
 
---
+--"Better" crafting plan formulator.
+
+--Figures out how many uses of each
+--recipe for a desiredItem are needed
+--in order to get the desiredAmount of
+--it.
+local function procureItem(desiredItem, desiredAmount)
+
+end
+
+local function generateCraftPlan(desiredItem, desiredAmount)
+	local craftPlan = {}
+	--Use this as a guide for how
+	--craftPlan recipe nodes are
+	--defined.
+	local craftPlanRoot = {}
+	--Primary product eName and amount.
+	craftPlanRoot[1] = {}
+	craftPlanRoot[1][1] = desiredItem
+	craftPlanRoot[1][2] = desiredAmount
+	--
+end
 
 --Client Request Interpretation
 
